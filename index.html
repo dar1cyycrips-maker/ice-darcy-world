@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ICE DARCY WORLD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap');
+        * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #030406; }
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #030406; }
+        ::-webkit-scrollbar-thumb { background: #36c9f6; border-radius: 4px; }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-80px) scale(1.4); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes confetti-fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes flicker { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 1; transform: scale(1.1); } }
+        @keyframes ripple-expand { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 200px; height: 200px; opacity: 0; } }
+        .animate-float { animation: floatUp 1s ease-out forwards; pointer-events: none; position: absolute; z-index: 100; }
+        .animate-shake { animation: shake 0.3s ease-in-out; }
+        .animate-slide-in { animation: slideIn 0.4s ease-out forwards; }
+        .tap-btn { transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
+        .tap-btn:active { transform: scale(0.88); }
+        .particle { position: absolute; width: 6px; height: 6px; background: #36c9f6; border-radius: 50%; pointer-events: none; z-index: 99; }
+        .confetti { position: fixed; width: 10px; height: 10px; z-index: 200; pointer-events: none; }
+        .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .tab-content.active { display: block; opacity: 1; }
+        .nav-btn { transition: all 0.2s ease; }
+        .nav-btn.active { color: white; text-shadow: 0 0 10px rgba(54,201,246,0.6); }
+        .nav-btn.active span { filter: drop-shadow(0 0 8px rgba(54,201,246,0.8)); }
+        .glass-panel { background: rgba(20, 25, 35, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(54,201,246,0.15); }
+        .energy-low { background: #ef4444 !important; box-shadow: 0 0 8px #ef4444 !important; }
+        .energy-mid { background: #f59e0b !important; box-shadow: 0 0 8px #f59e0b !important; }
+        #loading-screen { position: fixed; inset: 0; background: #030406; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease; }
+        .loader-ring { width: 60px; height: 60px; border: 3px solid rgba(54,201,246,0.1); border-top-color: #36c9f6; border-radius: 50%; animation: spin 1s linear infinite; }
+        .daily-card { background: linear-gradient(135deg, rgba(54,201,246,0.1) 0%, rgba(54,201,246,0.02) 100%); border: 1px solid rgba(54,201,246,0.3); }
+        .streak-flame { animation: flicker 1.5s ease-in-out infinite alternate; }
+        .ripple { position: absolute; border-radius: 50%; border: 2px solid rgba(54,201,246,0.6); animation: ripple-expand 0.6s ease-out forwards; pointer-events: none; }
+        #ton-connect button { background: rgba(54,201,246,0.15) !important; border: 1px solid rgba(54,201,246,0.5) !important; border-radius: 12px !important; color: #36c9f6 !important; font-size: 11px !important; font-weight: 700 !important; padding: 6px 12px !important; height: auto !important; }
+        #ton-connect button:hover { background: rgba(54,201,246,0.25) !important; }
+        .btn-ton { background: linear-gradient(135deg, #36c9f6 0%, #0ea5e9 100%); color: #030406; font-weight: 800; border-radius: 12px; padding: 10px 16px; font-size: 11px; border: none; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 15px rgba(54,201,246,0.3); }
+        .btn-ton:hover { box-shadow: 0 0 25px rgba(54,201,246,0.5); transform: translateY(-1px); }
+        .btn-ton:active { transform: scale(0.95); }
+        .btn-stars { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #030406; font-weight: 800; border-radius: 12px; padding: 10px 16px; font-size: 11px; border: none; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 0 15px rgba(251,191,36,0.3); }
+        .btn-stars:hover { box-shadow: 0 0 25px rgba(251,191,36,0.5); transform: translateY(-1px); }
+        .btn-stars:active { transform: scale(0.95); }
+        .energy-depleted-overlay { background: rgba(3,4,6,0.92); backdrop-filter: blur(8px); }
+        .countdown-digit { font-family: 'Orbitron', monospace; background: rgba(54,201,246,0.1); border: 1px solid rgba(54,201,246,0.3); border-radius: 8px; padding: 6px 10px; min-width: 44px; text-align: center; }
+    </style>
+</head>
+<body class="bg-[#030406] text-[#36c9f6] min-h-screen pb-24 select-none">
+
+    <div id="loading-screen">
+        <div class="loader-ring mb-4"></div>
+        <h2 class="font-cyber text-xl font-bold tracking-widest">ICE DARCY WORLD</h2>
+        <p class="text-xs text-[#36c9f6]/50 mt-2">INITIALIZING...</p>
+    </div>
+
+    <header class="p-3 border-b border-[#36c9f6]/20 flex justify-between items-center bg-[#030406]/90 backdrop-blur fixed top-0 w-full z-50">
+        <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
+            <h1 id="user-display" class="text-sm font-bold tracking-widest uppercase font-cyber">ICE DARCY WORLD</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <div id="streak-badge" class="hidden bg-orange-500/10 border border-orange-500/40 px-2 py-1 rounded-full text-xs font-bold text-orange-400 items-center gap-1">
+                <span class="streak-flame">🔥</span> <span id="streak-num">0</span>
+            </div>
+            <div id="level-badge" class="bg-[#36c9f6]/10 border border-[#36c9f6]/40 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-[0_0_10px_rgba(54,201,246,0.3)]">
+                ⚡ Lvl <span id="level-num">1</span> | 💎 <span id="diamonds-num">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20 p-4 max-w-md mx-auto">
+
+        <section id="tab-shop" class="tab-content active">
+            <div class="flex justify-between items-center mb-4 animate-slide-in">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider uppercase text-white font-cyber">THE SHOP</h2>
+                    <p class="text-xs text-[#36c9f6]/60">EXCLUSIVE DROPS & MERCH</p>
+                </div>
+                <div id="ton-connect"></div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="glass-panel p-4 rounded-2xl shadow-lg animate-slide-in" style="animation-delay: 0.1s">
+                    <div class="relative">
+                        <img src="https://i.postimg.cc/d3rbWj89/1787215341087.jpg" alt="ICE HOODIE V1" class="w-full h-44 object-cover rounded-xl mb-3 border border-[#36c9f6]/20">
+                        <div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold border border-[#36c9f6]/30">LIMITED</div>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">ICE HOODIE V1</h3>
+                            <p class="text-[#36c9f6] text-xs font-bold mt-1">85 TON / 850 ⭐</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="app.buyWithTON(85, 'ICE HOODIE V1')" class="btn-ton flex items-center justify-center gap-1"><span>💎</span> BUY WITH TON</button>
+                        <button onclick="app.buyWithStars('hoodie', 'ICE HOODIE V1', 850)" class="btn-stars flex items-center justify-center gap-1"><span>⭐</span> BUY WITH STARS</button>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl shadow-lg animate-slide-in" style="animation-delay: 0.2s">
+                    <div class="relative">
+                        <div class="w-full h-32 bg-gradient-to-br from-[#36c9f6]/20 to-[#030406] rounded-xl mb-3 border border-[#36c9f6]/20 flex items-center justify-center"><span class="text-4xl">🎫</span></div>
+                        <div class="absolute top-2 right-2 bg-purple-500/20 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold border border-purple-500/40 text-purple-300">VIP</div>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">ICE PASS SEASON 1</h3>
+                            <p class="text-[#36c9f6] text-xs font-bold mt-1">25 TON / 250 ⭐</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="app.buyWithTON(25, 'ICE PASS')" class="btn-ton flex items-center justify-center gap-1"><span>💎</span> BUY WITH TON</button>
+                        <button onclick="app.buyWithStars('pass', 'ICE PASS', 250)" class="btn-stars flex items-center justify-center gap-1"><span>⭐</span> BUY WITH STARS</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-frost" class="tab-content flex flex-col items-center justify-center pt-2">
+            <div id="daily-reward" class="w-full daily-card rounded-2xl p-4 mb-6 hidden animate-slide-in">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-sm font-bold text-white">🎁 DAILY REWARD</h3>
+                        <p class="text-xs text-[#36c9f6]/70 mt-0.5">Day <span id="reward-day">1</span> streak</p>
+                    </div>
+                    <button onclick="app.claimDaily()" id="claim-btn" class="bg-green-500 text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-[0_0_15px_rgba(34,197,94,0.5)] active:scale-95 transition-transform">CLAIM +50</button>
+                </div>
+            </div>
+
+            <div class="text-center mb-2 animate-slide-in">
+                <h2 class="text-3xl font-black tracking-wider text-white font-cyber">FROST TAP</h2>
+                <p class="text-xs text-[#36c9f6]/60 uppercase mt-1">Tap the core to harvest shards</p>
+            </div>
+            
+            <div class="relative flex items-center justify-center my-6" id="tap-area">
+                <div class="absolute w-56 h-56 rounded-full bg-[#36c9f6]/10 blur-2xl animate-pulse"></div>
+                <div class="absolute w-40 h-40 rounded-full bg-[#36c9f6]/5 blur-xl"></div>
+                <button id="tap-btn" class="tap-btn relative w-40 h-40 rounded-full border-[3px] border-[#36c9f6] shadow-[0_0_50px_rgba(54,201,246,0.3)] overflow-hidden bg-[#030406] flex items-center justify-center">
+                    <img src="https://i.postimg.cc/d3rbWj89/1787215341087.jpg" alt="ICE DARCY" class="w-full h-full object-cover pointer-events-none opacity-90">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#36c9f6]/20 to-transparent pointer-events-none"></div>
+                </button>
+            </div>
+
+            <div class="mt-2 text-center animate-slide-in">
+                <span id="shards-count" class="text-5xl font-black text-white font-cyber drop-shadow-[0_0_10px_rgba(54,201,246,0.5)]">0</span>
+                <p class="text-xs text-[#36c9f6]/70 mt-1 uppercase tracking-widest">Total Shards</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 w-full mt-6">
+                <div class="glass-panel p-3 rounded-xl text-center">
+                    <p class="text-[10px] text-[#36c9f6]/60 uppercase">Taps Today</p>
+                    <p id="taps-today" class="text-lg font-bold text-white font-cyber">0</p>
+                </div>
+                <div class="glass-panel p-3 rounded-xl text-center">
+                    <p class="text-[10px] text-[#36c9f6]/60 uppercase">Best Streak</p>
+                    <p id="best-streak" class="text-lg font-bold text-white font-cyber">0</p>
+                </div>
+            </div>
+
+            <div class="w-full glass-panel rounded-2xl p-4 mt-4 relative overflow-hidden">
+                <div class="flex justify-between text-xs font-bold mb-2">
+                    <span class="flex items-center gap-1">⚡ ENERGY</span>
+                    <span id="energy-text" class="font-cyber">1000 / 1000</span>
+                </div>
+                <div class="w-full bg-black/50 h-3 rounded-full overflow-hidden border border-[#36c9f6]/20 relative">
+                    <div id="energy-bar" class="bg-[#36c9f6] h-full w-full transition-all duration-200 shadow-[0_0_10px_#36c9f6] rounded-full"></div>
+                </div>
+                <p id="energy-warning" class="text-[10px] text-red-400 mt-1.5 hidden text-center font-bold animate-pulse">⚠️ ENERGY DEPLETED</p>
+
+                <div id="energy-depleted-overlay" class="energy-depleted-overlay absolute inset-0 rounded-2xl flex-col items-center justify-center hidden">
+                    <p class="text-xs font-bold text-red-400 mb-2 animate-pulse">⚡ ENERGY DEPLETED</p>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="countdown-digit text-white text-sm" id="cd-hr">00</div>
+                        <span class="text-white/50 font-bold">:</span>
+                        <div class="countdown-digit text-white text-sm" id="cd-min">00</div>
+                        <span class="text-white/50 font-bold">:</span>
+                        <div class="countdown-digit text-white text-sm" id="cd-sec">00</div>
+                    </div>
+                    <p class="text-[10px] text-[#36c9f6]/60 mb-3">Auto-refill in <span id="cd-label">02:00:00</span></p>
+                    <div class="flex gap-2">
+                        <button onclick="app.refillEnergyWithStars()" class="btn-stars text-xs px-4 py-2 flex items-center gap-1"><span>⭐</span> REFILL NOW (6)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+                        <div class="absolute top-2 right-2 bg-purple-500/20 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold border border-purple-500/40 text-purple-300">
+                            VIP
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">ICE PASS SEASON 1</h3>
+                            <p class="text-[#36c9f6] text-xs font-bold mt-1">25 TON / 250 ⭐</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="app.buyWithTON(25, 'ICE PASS')" class="btn-ton flex items-center justify-center gap-1">
+                            <span>💎</span> BUY WITH TON
+                        </button>
+                        <button onclick="app.buyWithStars('pass', 'ICE PASS', 250)" class="btn-stars flex items-center justify-center gap-1">
+                            <span>⭐</span> BUY WITH STARS
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FROST TAP TAB -->
+        <section id="tab-frost" class="tab-content flex flex-col items-center justify-center pt-2">
+            <!-- Daily Reward Card -->
+            <div id="daily-reward" class="w-full daily-card rounded-2xl p-4 mb-6 hidden animate-slide-in">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-sm font-bold text-white">🎁 DAILY REWARD</h3>
+                        <p class="text-xs text-[#36c9f6]/70 mt-0.5">Day <span id="reward-day">1</span> streak</p>
+                    </div>
+                    <button onclick="app.claimDaily()" id="claim-btn" class="bg-green-500 text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-[0_0_15px_rgba(34,197,94,0.5)] active:scale-95 transition-transform">
+                        CLAIM +50
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center mb-2 animate-slide-in">
+                <h2 class="text-3xl font-black tracking-wider text-white font-cyber">FROST TAP</h2>
+                <p class="text-xs text-[#36c9f6]/60 uppercase mt-1">Tap the core to harvest shards</p>
+            </div>
+            
+            <div class="relative flex items-center justify-center my-6" id="tap-area">
+                <div class="absolute w-56 h-56 rounded-full bg-[#36c9f6]/10 blur-2xl animate-pulse"></div>
+                <div class="absolute w-40 h-40 rounded-full bg-[#36c9f6]/5 blur-xl"></div>
+                
+                <button id="tap-btn" class="tap-btn relative w-40 h-40 rounded-full border-[3px] border-[#36c9f6] shadow-[0_0_50px_rgba(54,201,246,0.3)] overflow-hidden bg-[#030406] flex items-center justify-center">
+                    <img src="https://i.postimg.cc/d3rbWj89/1787215341087.jpg" alt="ICE DARCY" class="w-full h-full object-cover pointer-events-none opacity-90">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#36c9f6]/20 to-transparent pointer-events-none"></div>
+                </button>
+            </div>
+
+            <div class="mt-2 text-center animate-slide-in">
+                <span id="shards-count" class="text-5xl font-black text-white font-cyber drop-shadow-[0_0_10px_rgba(54,201,246,0.5)]">0</span>
+                <p class="text-xs text-[#36c9f6]/70 mt-1 uppercase tracking-widest">Total Shards</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 gap-3 w-full mt-6">
+                <div class="glass-panel p-3 rounded-xl text-center">
+                    <p class="text-[10px] text-[#36c9f6]/60 uppercase">Taps Today</p>
+                    <p id="taps-today" class="text-lg font-bold text-white font-cyber">0</p>
+                </div>
+                <div class="glass-panel p-3 rounded-xl text-center">
+                    <p class="text-[10px] text-[#36c9f6]/60 uppercase">Best Streak</p>
+                    <p id="best-streak" class="text-lg font-bold text-white font-cyber">0</p>
+                </div>
+            </div>
+
+            <!-- Energy Bar -->
+            <div class="w-full glass-panel rounded-2xl p-4 mt-4 relative overflow-hidden">
+                <div class="flex justify-between text-xs font-bold mb-2">
+                    <span class="flex items-center gap-1">⚡ ENERGY</span>
+                    <span id="energy-text" class="font-cyber">1000 / 1000</span>
+                </div>
+                <div class="w-full bg-black/50 h-3 rounded-full overflow-hidden border border-[#36c9f6]/20 relative">
+                    <div id="energy-bar" class="bg-[#36c9f6] h-full w-full transition-all duration-200 shadow-[0_0_10px_#36c9f6] rounded-full"></div>
+                </div>
+                <p id="energy-warning" class="text-[10px] text-red-400 mt-1.5 hidden text-center font-bold animate-pulse">⚠️ ENERGY DEPLETED</p>
+
+                <!-- Energy Depleted Overlay -->
+                <div id="energy-depleted-overlay" class="energy-depleted-overlay absolute inset-0 rounded-2xl flex-col items-center justify-center hidden">
+                    <p class="text-xs font-bold text-red-400 mb-2 animate-pulse">⚡ ENERGY DEPLETED</p>
+                    
+                    <!-- Countdown -->
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="countdown-digit text-white text-sm" id="cd-hr">00</div>
+                        <span class="text-white/50 font-bold">:</span>
+                        <div class="countdown-digit text-white text-sm" id="cd-min">00</div>
+                        <span class="text-white/50 font-bold">:</span>
+                        <div class="countdown-digit text-white text-sm" id="cd-sec">00</div>
+                    </div>
+                    <p class="text-[10px] text-[#36c9f6]/60 mb-3">Auto-refill in <span id="cd-label">02:00:00</span></p>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="app.refillEnergyWithStars()" class="btn-stars text-xs px-4 py-2 flex items-center gap-1">
+                            <span>⭐</span> REFILL NOW (6)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEADERBOARD TAB -->
+        <section id="tab-leaderboard" class="tab-content">
+            <div class="mb-6 animate-slide-in">
+                <h2 class="text-2xl font-black tracking-wider uppercase text-white font-cyber">LEADERBOARD</h2>
+                <p class="text-xs text-[#36c9f6]/60">TOP ICE COLLECTORS WORLDWIDE</p>
+            </div>
+            
+            <!-- Top 3 Podium -->
+            <div class="flex justify-center items-end gap-3 mb-6 animate-slide-in" style="animation-delay: 0.1s">
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full border-2 border-gray-400 bg-gray-800 flex items-center justify-center text-xl shadow-lg">🥈</div>
+                    <p class="text-[10px] mt-1 text-gray-400 font-bold">@FROST</p>
+                    <p class="text-xs text-[#36c9f6] font-black">12.1K</p>
+                </div>
+                <div class="flex flex-col items-center -mt-4">
+                    <div class="w-16 h-16 rounded-full border-2 border-yellow-400 bg-gray-800 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(250,204,21,0.4)] animate-pulse">👑</div>
+                    <p class="text-[10px] mt-1 text-yellow-400 font-bold">@ICEDARCY</p>
+                    <p class="text-xs text-[#36c9f6] font-black">24.5K</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full border-2 border-orange-600 bg-gray-800 flex items-center justify-center text-xl shadow-lg">🥉</div>
+                    <p class="text-[10px] mt-1 text-orange-600 font-bold">@BLIZZ</p>
+                    <p class="text-xs text-[#36c9f6] font-black">9.8K</p>
+                </div>
+            </div>
+
+            <div id="leaderboard-list" class="space-y-2"></div>
+            
+            <div class="mt-4 p-3 rounded-xl border border-[#36c9f6]/10 bg-[#36c9f6]/5 text-center">
+                <p class="text-[10px] text-[#36c9f6]/50">Your Rank: <span class="text-white font-bold">#--</span></p>
+            </div>
+        </section>
+
+        <!-- LEVELING TAB -->
+        <section id="tab-leveling" class="tab-content">
+            <div class="mb-6 animate-slide-in">
+                <h2 class="text-2xl font-black tracking-wider uppercase text-white font-cyber">LEVEL SYSTEM</h2>
+                <p class="text-xs text-[#36c9f6]/60">PROGRESS & PERKS</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl text-center mb-6 animate-slide-in" style="animation-delay: 0.1s">
+                <p class="text-xs text-[#36c9f6]/60 uppercase tracking-widest mb-2">Current Level</p>
+                <div class="text-6xl font-black text-white font-cyber drop-shadow-[0_0_20px_rgba(54,201,246,0.5)]" id="big-level">1</div>
+                <p id="level-title" class="text-sm text-[#36c9f6] font-bold mt-1">ICE NOVICE</p>
+            </div>
+            
+            <div class="glass-panel p-5 rounded-2xl space-y-4 animate-slide-in" style="animation-delay: 0.2s">
+                <div class="flex justify-between text-xs font-bold">
+                    <span class="text-white/80">PROGRESS TO NEXT LEVEL</span>
+                    <span id="progress-text" class="font-cyber text-[#36c9f6]">0 / 100</span>
+                </div>
+                <div class="w-full bg-black/50 h-4 rounded-full overflow-hidden border border-[#36c9f6]/30 relative">
+                    <div id="progress-bar" class="bg-gradient-to-r from-[#36c9f6] to-[#6ee7ff] h-full w-0 transition-all duration-500 shadow-[0_0_15px_#36c9f6] rounded-full"></div>
+                </div>
+                <p class="text-[10px] text-[#36c9f6]/50 text-center"><span id="next-level-name">ICE APPRENTICE</span> at Level <span id="next-lvl-num">2</span></p>
+            </div>
+
+            <div class="mt-6 space-y-3">
+                <h3 class="text-xs font-bold text-white/60 uppercase tracking-wider mb-3">Unlocked Perks</h3>
+                <div class="glass-panel p-3 rounded-xl flex items-center gap-3 opacity-100">
+                    <span class="text-xl">❄️</span>
+                    <div>
+                        <p class="text-xs font-bold text-white">Basic Tap</p>
+                        <p class="text-[10px] text-[#36c9f6]/60">+1 shard per tap</p>
+                    </div>
+                </div>
+                <div id="perk-2" class="glass-panel p-3 rounded-xl flex items-center gap-3 opacity-40">
+                    <span class="text-xl">⚡</span>
+                    <div>
+                        <p class="text-xs font-bold text-white">Energy Boost</p>
+                        <p class="text-[10px] text-[#36c9f6]/60">Unlocks at Level 5</p>
+                    </div>
+                </div>
+                <div id="perk-3" class="glass-panel p-3 rounded-xl flex items-center gap-3 opacity-40">
+                    <span class="text-xl">💎</span>
+                    <div>
+                        <p class="text-xs font-bold text-white">Diamond Multiplier</p>
+                        <p class="text-[10px] text-[#36c9f6]/60">Unlocks at Level 10</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 w-full bg-[#030406]/95 backdrop-blur-md border-t border-[#36c9f6]/20 flex justify-around p-3 z-50 pb-safe">
+        <button onclick="app.switchTab('shop')" id="nav-shop" class="nav-btn active flex flex-col items-center text-xs font-bold gap-0.5">
+            <span class="text-lg transition-transform">🛒</span> SHOP
+        </button>
+        <button onclick="app.switchTab('frost')" id="nav-frost" class="nav-btn flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5">
+            <span class="text-lg transition-transform">💎</span> FROST
+        </button>
+        <button onclick="app.switchTab('leaderboard')" id="nav-leaderboard" class="nav-btn flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5">
+            <span class="text-lg transition-transform">🏆</span> RANKS
+        </button>
+        <button onclick="app.switchTab('leveling')" id="nav-leveling" class="nav-btn flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5">
+            <span class="text-lg transition-transform">⚡</span> LEVEL
+        </button>
+    </nav>
+
+    <script>
+
+            <span class="text-lg transition-transform">💎</span> FROST
+        </button>
+        <button onclick="app.switchTab('leaderboard')" id="nav-leaderboard" class="nav-btn flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5">
+            <span class="text-lg transition-transform">🏆</span> RANKS
+        </button>
+        <button onclick="app.switchTab('leveling')" id="nav-leveling" class="nav-btn flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5">
+            <span class="text-lg transition-transform">⚡</span> LEVEL
+        </button>
+    </nav>
+
+    <script>
+        // ==================== CONFIG ====================
+        const CONFIG = {
+            tonconnectManifest: 'https://your-domain.com/tonconnect-manifest.json',
+            walletAddress: 'UQAQ4D1q8hoC2mOiLBgx8ZSguB-MdTcKLAylFfeyWkxbC5Gp',
+            invoices: {
+                black ice: 'https://t.me/$YOUR_BOT?start=invoice_hoodie_850',
+                pass: 'https://t.me/$YOUR_BOT?start=invoice_pass_250',
+                energyRefill: 'https://t.me/$YOUR_BOT?start=invoice_energy_6'
+            },
+            starsPrices: { black ice: 850, pass: 250, energyRefill: 6 }
+        };
+
+        // ==================== AUDIO ENGINE ====================
+        class AudioEngine {
+            constructor() { this.ctx = null; this.enabled = true; }
+            init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+            playTap() {
+                if (!this.enabled || !this.ctx) return;
+                const osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+                osc.start(this.ctx.currentTime); osc.stop(this.ctx.currentTime + 0.08);
+            }
+            playLevelUp() {
+                if (!this.enabled || !this.ctx) return;
+                [523, 659, 784, 1047].forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime + i * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.1 + 0.2);
+                    osc.start(this.ctx.currentTime + i * 0.1); osc.stop(this.ctx.currentTime + i * 0.1 + 0.2);
+                });
+            }
+            playError() {
+                if (!this.enabled || !this.ctx) return;
+                const osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+                osc.start(this.ctx.currentTime); osc.stop(this.ctx.currentTime + 0.15);
+            }
+            playRefill() {
+                if (!this.enabled || !this.ctx) return;
+                [440, 554, 659].forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator(), gain = this.ctx.createGain();
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.08 + 0.15);
+                    osc.start(this.ctx.currentTime + i * 0.08); osc.stop(this.ctx.currentTime + i * 0.08 + 0.15);
+                });
+            }
+        }
+
+        // ==================== STATE MANAGER ====================
+        class GameState {
+            constructor() { this.prefix = 'ice_world_'; }
+            _key(k) { return this.prefix + k; }
+            get(key) { try { const val = localStorage.getItem(this._key(key)); return val ? JSON.parse(val) : null; } catch { return null; } }
+            set(key, value) { localStorage.setItem(this._key(key), JSON.stringify(value)); }
+            getShards() { return this.get('shards') || 0; } setShards(v) { this.set('shards', v); }
+            getDiamonds() { return this.get('diamonds') || 0; } setDiamonds(v) { this.set('diamonds', v); }
+            getLevel() { return this.get('level') || 1; } setLevel(v) { this.set('level', v); }
+            getEnergy() { return this.get('energy') || 1000; } setEnergy(v) { this.set('energy', v); }
+            getEnergyDepletedAt() { return this.get('energy_depleted_at'); } setEnergyDepletedAt(v) { this.set('energy_depleted_at', v); }
+            getLastDaily() { return this.get('last_daily') || 0; } setLastDaily(v) { this.set('last_daily', v); }
+            getStreak() { return this.get('streak') || 0; } setStreak(v) { this.set('streak', v); }
+            getBestStreak() { return this.get('best_streak') || 0; } setBestStreak(v) { this.set('best_streak', v); }
+            getTapsToday() { return this.get('taps_today') || 0; } setTapsToday(v) { this.set('taps_today', v); }
+            getLastTapDate() { return this.get('last_tap_date') || ''; } setLastTapDate(v) { this.set('last_tap_date', v); }
+            getUsername() { return this.get('username') || 'PLAYER'; } setUsername(v) { this.set('username', v); }
+        }
+
+        // ==================== ENERGY SYSTEM ====================
+        class EnergySystem {
+            constructor(state, maxEnergy, rechargeMinutes) {
+                this.state = state; this.maxEnergy = maxEnergy; this.rechargeMs = rechargeMinutes * 60 * 1000;
+                this.costPerTap = 10; this.onDepleted = null; this.onRefilled = null;
+            }
+            getCurrentEnergy() {
+                let energy = this.state.getEnergy(); const depletedAt = this.state.getEnergyDepletedAt();
+                if (energy <= 0 && depletedAt) { const now = Date.now(); if (now >= depletedAt + this.rechargeMs) { energy = this.maxEnergy; this.state.setEnergy(energy); this.state.setEnergyDepletedAt(null); if (this.onRefilled) this.onRefilled('auto'); } }
+                return energy;
+            }
+            consume() {
+                let energy = this.getCurrentEnergy(); if (energy < this.costPerTap) return false;
+                energy -= this.costPerTap; this.state.setEnergy(energy);
+                if (energy <= 0) { this.state.setEnergyDepletedAt(Date.now()); if (this.onDepleted) this.onDepleted(); }
+                return true;
+            }
+            instantRefill() { this.state.setEnergy(this.maxEnergy); this.state.setEnergyDepletedAt(null); if (this.onRefilled) this.onRefilled('stars'); return this.maxEnergy; }
+            getTimeRemainingMs() { const depletedAt = this.state.getEnergyDepletedAt(); if (!depletedAt) return 0; return Math.max(0, depletedAt + this.rechargeMs - Date.now()); }
+            isDepleted() { return this.getCurrentEnergy() <= 0; }
+        }
+
+        // ==================== MAIN APP ====================
+        class IceDarcyApp {
+            constructor() {
+                this.tg = window.Telegram.WebApp; this.state = new GameState(); this.audio = new AudioEngine();
+                this.energySys = new EnergySystem(this.state, 1000, 120); this.tonConnectUI = null;
+                this.levelTitles = ["ICE NOVICE","ICE APPRENTICE","ICE HUNTER","ICE WARRIOR","ICE LORD","ICE KING","ICE EMPEROR","ICE GOD"];
+                this.leaderboardData = [
+                    {name:"@ICEDARCY",shards:2450000,rank:1},{name:"@FROST",shards:122100,rank:2},{name:"@Babaali",shards:38900,rank:3},
+                    {name:"@parisa",shards:1243590,rank:4},{name:"@GLACIER",shards:72000,rank:5},{name:"@POLAR",shards:31300,rank:6},
+                    {name:"@ARCTIC",shards:548100,rank:7},{name:"@CHILL",shards:43000,rank:8}
+                ];
+                this.energySys.onDepleted = () => this.onEnergyDepleted(); this.energySys.onRefilled = (s) => this.onEnergyRefilled(s);
+                this.init();
+            }
+            async init() {
+                this.tg.expand(); this.tg.ready(); this.tg.enableClosingConfirmation();
+                document.addEventListener('touchstart', () => this.audio.init(), {once:true});
+                document.addEventListener('click', () => this.audio.init(), {once:true});
+                this.loadUser(); this.initTONConnect(); this.checkDailyReset(); this.checkTapsReset();
+                this.setupEventListeners(); this.renderUI(); this.renderLeaderboard(); this.startCountdownLoop();
+                setTimeout(() => { const l = document.getElementById('loading-screen'); l.style.opacity = '0'; setTimeout(() => l.remove(), 500); }, 1000);
+            }
+            loadUser() {
+                let u = "PLAYER"; if (this.tg.initDataUnsafe && this.tg.initDataUnsafe.user) { const usr = this.tg.initDataUnsafe.user; u = usr.username || usr.first_name || "PLAYER"; this.state.setUsername(u); } else { u = this.state.getUsername(); }
+                document.getElementById('user-display').innerText = "@" + u; document.title = "ICE DARCY WORLD";
+            }
+            initTONConnect() {
+                try { if (typeof TON_CONNECT_UI === 'undefined') { console.warn('TON Connect UI not loaded'); return; }
+                    this.tonConnectUI = new TON_CONNECT_UI.TonConnectUI({ manifestUrl: CONFIG.tonconnectManifest, buttonRootId: 'ton-connect' });
+                    this.tonConnectUI.onStatusChange((wallet) => { if (wallet) { console.log('TON Wallet connected:', wallet.account.address); this.haptic('success'); } });
+                } catch (err) { console.error('TON Connect init error:', err); }
+            }
+            setupEventListeners() {
+                const tapBtn = document.getElementById('tap-btn');
+                tapBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); this.handleTap(e); });
+                tapBtn.addEventListener('contextmenu', (e) => e.preventDefault());
+            }
+            handleTap(e) {
+                if (this.energySys.isDepleted()) { this.haptic('error'); this.audio.playError(); this.showFloatingText(e.clientX, e.clientY, "NO ENERGY!", "#ef4444"); document.getElementById('tap-area').classList.add('animate-shake'); setTimeout(() => document.getElementById('tap-area').classList.remove('animate-shake'), 300); return; }
+                if (!this.energySys.consume()) { this.onEnergyDepleted(); return; }
+                const rect = e.target.getBoundingClientRect(); const x = e.clientX || (rect.left + rect.width / 2); const y = e.clientY || (rect.top + rect.height / 2);
+                let shards = this.state.getShards() + 1, diamonds = this.state.getDiamonds() + 1, tapsToday = this.state.getTapsToday() + 1, level = this.state.getLevel();
+                this.state.setShards(shards); this.state.setDiamonds(diamonds); this.state.setTapsToday(tapsToday);
+                if (diamonds >= level * 100) { level++; this.state.setLevel(level); this.audio.playLevelUp(); this.haptic('success'); this.spawnConfetti(); this.showLevelUp(level); }
+                else { this.audio.playTap(); this.haptic('light'); }
+                this.showFloatingText(x, y, "+1", "#fff"); this.spawnParticles(x, y); this.spawnRipple(x, y); this.renderUI();
+            }
+            onEnergyDepleted() { this.renderUI(); this.audio.playError(); this.haptic('error'); }
+            onEnergyRefilled(source) { this.renderUI(); this.audio.playRefill(); this.haptic('success'); if (source === 'stars') this.showFloatingText(window.innerWidth / 2, window.innerHeight / 2, "ENERGY REFILLED!", "#fbbf24"); }
+            startCountdownLoop() { setInterval(() => { if (this.energySys.isDepleted()) { const r = this.energySys.getTimeRemainingMs(); if (r <= 0) this.energySys.getCurrentEnergy(); else this.updateCountdownDisplay(r); } }, 1000); }
+            updateCountdownDisplay(ms) { const ts = Math.ceil(ms / 1000), hrs = Math.floor(ts / 3600), mins = Math.floor((ts % 3600) / 60), secs = ts % 60; document.getElementById('cd-hr').innerText = String(hrs).padStart(2, '0'); document.getElementById('cd-min').innerText = String(mins).padStart(2, '0'); document.getElementById('cd-sec').innerText = String(secs).padStart(2, '0'); document.getElementById('cd-label').innerText = String(hrs).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0'); }
+
+            async buyWithTON(amountTON, itemName) {
+                this.haptic('medium');
+
+                if (!this.tonConnectUI) {
+                    this.tg.showAlert('TON Connect is not initialized. Please check your manifest URL.');
+                    return;
+                }
+
+                const connected = this.tonConnectUI.connected;
+                if (!connected) {
+                    await this.tonConnectUI.openModal();
+                    return;
+                }
+
+                try {
+                    const amountNano = String(amountTON * 1000000000);
+                    await this.tonConnectUI.sendTransaction({
+                        validUntil: Math.floor(Date.now() / 1000) + 600,
+                        messages: [{
+                            address: CONFIG.walletAddress,
+                            amount: amountNano,
+                            payload: btoa("ICE_DARCY:" + itemName).replace(/=/g, '')
+                        }]
+                    });
+
+                    this.haptic('success');
+                    this.audio.playLevelUp();
+                    this.tg.showPopup({
+                        title: '✅ Payment Sent',
+                        message: amountTON + ' TON sent for ' + itemName + '. Your order will be processed after confirmation.',
+                        buttons: [{ id: 'ok', text: 'AWESOME!' }]
+                    });
+                } catch (err) {
+                    console.error('TON payment error:', err);
+                    if (err.message && (err.message.includes('Rejected') || err.message.includes('Cancel'))) {
+                        return;
+                    }
+                    this.tg.showAlert('Payment failed. Please try again.');
+                }
+            }
+
+            buyWithStars(productId, itemName, starsAmount) {
+                this.haptic('medium');
+
+                const invoiceUrl = CONFIG.invoices[productId];
+                if (!invoiceUrl || invoiceUrl.includes('YOUR_BOT')) {
+                    this.tg.showPopup({
+                        title: '⚙️ Setup Required',
+                        message: 'To accept Stars payments, you must:\n\n1. Use Bot API createInvoiceLink with currency="XTR"\n2. Set the returned URL in CONFIG.invoices.' + productId + '\n\nItem: ' + itemName + '\nPrice: ' + starsAmount + ' Stars',
+                        buttons: [{ id: 'ok', text: 'GOT IT' }]
+                    });
+                    return;
+                }
+
+                this.tg.openInvoice(invoiceUrl, (status) => {
+                    if (status === 'paid') {
+                        this.haptic('success');
+                        this.audio.playLevelUp();
+                        this.spawnConfetti();
+                        this.tg.showPopup({
+                            title: '🎉 Purchase Complete!',
+                            message: 'You successfully bought ' + itemName + ' with ' + starsAmount + ' Telegram Stars!',
+                            buttons: [{ id: 'ok', text: 'NICE!' }]
+                        });
+                    } else if (status === 'failed') {
+                        this.tg.showAlert('Payment failed. Please try again.');
+                    }
+                });
+            }
+
+            refillEnergyWithStars() {
+                this.haptic('medium');
+
+                const invoiceUrl = CONFIG.invoices.energyRefill;
+                if (!invoiceUrl || invoiceUrl.includes('YOUR_BOT')) {
+                    this.tg.showPopup({
+                        title: '⚙️ Setup Required',
+                        message: 'To refill energy with Stars, set CONFIG.invoices.energyRefill to your Bot API invoice link for 6 Stars.',
+                        buttons: [{ id: 'ok', text: 'GOT IT' }]
+                    });
+                    return;
+                }
+
+                this.tg.openInvoice(invoiceUrl, (status) => {
+                    if (status === 'paid') {
+                        this.energySys.instantRefill();
+                        this.tg.showPopup({
+                            title: '⚡ Energy Refilled!',
+                            message: 'Your energy has been restored to 1000. Keep tapping!',
+                            buttons: [{ id: 'ok', text: "LET'S GO!" }]
+                        });
+                    } else if (status === 'failed') {
+                        this.tg.showAlert('Payment failed. Energy not refilled.');
+                    }
+                });
+            }
+
+            // ==================== DAILY REWARD ====================
+            checkDailyReset() {
+                const lastDaily = this.state.getLastDaily();
+                const now = new Date();
+                const lastDate = new Date(lastDaily);
+                const isNewDay = now.toDateString() !== lastDate.toDateString();
+
+                const dailyCard = document.getElementById('daily-reward');
+                const claimBtn = document.getElementById('claim-btn');
+
+                if (isNewDay || lastDaily === 0) {
+                    dailyCard.classList.remove('hidden');
+                    claimBtn.disabled = false;
+                    claimBtn.innerText = "CLAIM +50";
+                    claimBtn.classList.remove('bg-gray-600', 'text-gray-400');
+                    claimBtn.classList.add('bg-green-500', 'text-black');
+                } else {
+                    dailyCard.classList.remove('hidden');
+                    claimBtn.disabled = true;
+                    claimBtn.innerText = "CLAIMED";
+                    claimBtn.classList.remove('bg-green-500', 'text-black');
+                    claimBtn.classList.add('bg-gray-600', 'text-gray-400');
+                }
+                document.getElementById('reward-day').innerText = this.state.getStreak() + 1;
+            }
+
+            claimDaily() {
+                const lastDaily = this.state.getLastDaily();
+                const now = new Date();
+                const lastDate = new Date(lastDaily);
+                if (now.toDateString() === lastDate.toDateString() && lastDaily !== 0) return;
+
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                let streak = this.state.getStreak();
+
+                if (lastDate.toDateString() === yesterday.toDateString()) {
+                    streak++;
+                } else if (lastDaily === 0) {
+                    streak = 1;
+                } else {
+                    streak = 1;
+                }
+
+                const bestStreak = Math.max(streak, this.state.getBestStreak());
+                let shards = this.state.getShards() + 50;
+                let diamonds = this.state.getDiamonds() + 50;
+
+                this.state.setShards(shards);
+                this.state.setDiamonds(diamonds);
+                this.state.setStreak(streak);
+                this.state.setBestStreak(bestStreak);
+                this.state.setLastDaily(Date.now());
+
+                this.audio.playLevelUp();
+                this.haptic('success');
+                this.spawnConfetti();
+
+                const btn = document.getElementById('claim-btn');
+                btn.disabled = true;
+                btn.innerText = "CLAIMED ✓";
+                btn.classList.remove('bg-green-500', 'text-black');
+                btn.classList.add('bg-gray-600', 'text-gray-400');
+
+                this.renderUI();
+                this.showFloatingText(window.innerWidth / 2, window.innerHeight / 2, "+50 SHARDS", "#36c9f6");
+            }
+
+            checkTapsReset() {
+                const today = new Date().toDateString();
+                const lastDate = this.state.getLastTapDate();
+                if (lastDate !== today) {
+                    this.state.setTapsToday(0);
+                    this.state.setLastTapDate(today);
+                }
+            }
+
+            // ==================== VISUAL FX ====================
+            showFloatingText(x, y, text, color) {
+                const el = document.createElement('div');
+                el.className = 'animate-float font-cyber font-black text-lg';
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+                el.style.color = color;
+                el.innerText = text;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 1000);
+            }
+
+            spawnParticles(x, y) {
+                const count = 6 + Math.floor(Math.random() * 4);
+                for (let i = 0; i < count; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    const size = 4 + Math.random() * 6;
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    p.style.left = x + 'px';
+                    p.style.top = y + 'px';
+                    const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5);
+                    const velocity = 60 + Math.random() * 80;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity;
+                    p.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    document.body.appendChild(p);
+                    requestAnimationFrame(() => {
+                        p.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(0)';
+                        p.style.opacity = '0';
+                    });
+                    setTimeout(() => p.remove(), 600);
+                }
+            }
+
+            spawnRipple(x, y) {
+                const r = document.createElement('div');
+                r.className = 'ripple';
+                r.style.left = x + 'px';
+                r.style.top = y + 'px';
+                document.body.appendChild(r);
+                setTimeout(() => r.remove(), 600);
+            }
+
+            spawnConfetti() {
+                const colors = ['#36c9f6', '#ffffff', '#6ee7ff', '#a5f3fc', '#22d3ee', '#fbbf24'];
+                for (let i = 0; i < 30; i++) {
+                    const c = document.createElement('div');
+                    c.className = 'confetti';
+                    c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    c.style.left = Math.random() * 100 + 'vw';
+                    c.style.top = '-10px';
+                    c.style.animation = 'confetti-fall ' + (1.5 + Math.random() * 2) + 's linear forwards';
+                    c.style.animationDelay = Math.random() * 0.5 + 's';
+                    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    c.style.width = (5 + Math.random() * 8) + 'px';
+                    c.style.height = (5 + Math.random() * 8) + 'px';
+                    document.body.appendChild(c);
+                    setTimeout(() => c.remove(), 4000);
+                }
+            }
+
+            showLevelUp(level) {
+                const title = this.levelTitles[Math.min(level - 1, this.levelTitles.length - 1)] || "ICE LEGEND";
+                setTimeout(() => {
+                    this.tg.showPopup({
+                        title: '⚡ LEVEL ' + level + '!',
+                        message: 'You are now a ' + title + '!\n\nKeep tapping to unlock more perks.',
+                        buttons: [{ id: 'ok', text: "LET'S GO!" }]
+                    });
+                }, 300);
+            }
+
+            // ==================== UI RENDERING ====================
+            renderUI() {
+                const energy = this.energySys.getCurrentEnergy();
+                const pct = (energy / this.energySys.maxEnergy) * 100;
+                const bar = document.getElementById('energy-bar');
+                const text = document.getElementById('energy-text');
+                const warning = document.getElementById('energy-warning');
+                const overlay = document.getElementById('energy-depleted-overlay');
+
+                bar.style.width = pct + '%';
+                text.innerText = energy + " / " + this.energySys.maxEnergy;
+
+                bar.classList.remove('energy-low', 'energy-mid');
+                if (pct < 15) {
+                    bar.classList.add('energy-low');
+                    warning.classList.remove('hidden');
+                } else if (pct < 40) {
+                    bar.classList.add('energy-mid');
+                    warning.classList.add('hidden');
+                } else {
+                    warning.classList.add('hidden');
+                }
+
+                if (this.energySys.isDepleted()) {
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                    this.updateCountdownDisplay(this.energySys.getTimeRemainingMs());
+                } else {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
+
+                document.getElementById('shards-count').innerText = this.state.getShards().toLocaleString();
+                document.getElementById('diamonds-num').innerText = this.state.getDiamonds().toLocaleString();
+                document.getElementById('level-num').innerText = this.state.getLevel();
+                document.getElementById('big-level').innerText = this.state.getLevel();
+                document.getElementById('taps-today').innerText = this.state.getTapsToday().toLocaleString();
+                document.getElementById('best-streak').innerText = this.state.getBestStreak();
+
+                const streak = this.state.getStreak();
+                const streakBadge = document.getElementById('streak-badge');
+                if (streak > 0) {
+                    streakBadge.classList.remove('hidden');
+                    streakBadge.classList.add('flex');
+                    document.getElementById('streak-num').innerText = streak;
+                } else {
+                    streakBadge.classList.add('hidden');
+                    streakBadge.classList.remove('flex');
+                }
+
+                const level = this.state.getLevel();
+                const diamonds = this.state.getDiamonds();
+                const progress = diamonds % 100;
+
+                document.getElementById('progress-bar').style.width = progress + '%';
+                document.getElementById('progress-text').innerText = progress + ' / 100';
+                document.getElementById('next-lvl-num').innerText = level + 1;
+                document.getElementById('level-title').innerText = this.levelTitles[Math.min(level - 1, this.levelTitles.length - 1)] || "ICE LEGEND";
+                document.getElementById('next-level-name').innerText = this.levelTitles[Math.min(level, this.levelTitles.length - 1)] || "ICE MASTER";
+
+                document.getElementById('perk-2').style.opacity = level >= 5 ? '1' : '0.4';
+                document.getElementById('perk-3').style.opacity = level >= 10 ? '1' : '0.4';
+            }
+
+            renderLeaderboard() {
+                const container = document.getElementById('leaderboard-list');
+                const myShards = this.state.getShards();
+
+                const displayData = [...this.leaderboardData];
+                displayData.push({ name: "@YOU", shards: myShards, rank: -1, isMe: true });
+                displayData.sort((a, b) => b.shards - a.shards);
+
+                container.innerHTML = '';
+                displayData.forEach((entry, idx) => {
+                    const isMe = entry.isMe;
+                    const rank = idx + 1;
+                    const div = document.createElement('div');
+                    div.className = 'p-3 rounded-xl border flex justify-between items-center text-xs animate-slide-in ' + 
+                        (isMe ? 'bg-[#36c9f6]/10 border-[#36c9f6]/40' : 'bg-gray-900/60 border-[#36c9f6]/20');
+                    div.style.animationDelay = (idx * 0.05) + 's';
+
+                    let rankIcon = '';
+                    if (rank === 1) rankIcon = '🥇';
+                    else if (rank === 2) rankIcon = '🥈';
+                    else if (rank === 3) rankIcon = '🥉';
+                    else rankIcon = '<span class="text-gray-500 w-4 inline-block text-center">' + rank + '</span>';
+
+                    div.innerHTML = 
+                        '<div class="flex items-center gap-2">' +
+                            rankIcon +
+                            '<span class="font-bold ' + (isMe ? 'text-[#36c9f6]' : 'text-white') + '">' + entry.name + '</span>' +
+                            (isMe ? '<span class="text-[10px] bg-[#36c9f6]/20 px-1.5 py-0.5 rounded text-[#36c9f6]">YOU</span>' : '') +
+                        '</div>' +
+                        '<span class="text-[#36c9f6] font-black font-cyber">' + entry.shards.toLocaleString() + '</span>';
+                    container.appendChild(div);
+                });
+            }
+
+            switchTab(tabName) {
+                document.querySelectorAll('.tab-content').forEach(el => {
+                    el.classList.remove('active');
+                    setTimeout(() => {
+                        if (!el.classList.contains('active')) el.style.display = 'none';
+                    }, 300);
+                });
+                
+                const target = document.getElementById('tab-' + tabName);
+                target.style.display = 'block';
+                target.offsetHeight;
+                target.classList.add('active');
+
+                document.querySelectorAll('.nav-btn').forEach(el => {
+                    el.classList.remove('active');
+                    el.classList.replace('text-white', 'text-[#36c9f6]/40');
+                });
+                
+                const activeNav = document.getElementById('nav-' + tabName);
+                activeNav.classList.add('active');
+                activeNav.classList.replace('text-[#36c9f6]/40', 'text-white');
+
+                this.haptic('light');
+                
+                if (tabName === 'leaderboard') {
+                    this.renderLeaderboard();
+                }
+            }
+
+            haptic(type) {
+                if (this.tg.HapticFeedback) {
+                    if (type === 'light') this.tg.HapticFeedback.impactOccurred('light');
+                    else if (type === 'medium') this.tg.HapticFeedback.impactOccurred('medium');
+                    else if (type === 'success') this.tg.HapticFeedback.notificationOccurred('success');
+                    else if (type === 'error') this.tg.HapticFeedback.notificationOccurred('error');
+                } else if (navigator.vibrate) {
+                    if (type === 'error') navigator.vibrate([50, 50, 50]);
+                    else navigator.vibrate(15);
+                }
+            }
+        }
+
+        const app = new IceDarcyApp();
+    </script>
+</body>
+</html>
+
