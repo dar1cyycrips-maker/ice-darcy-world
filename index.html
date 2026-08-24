@@ -1,214 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ICE DARCY WORLD</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-
-        const SUPABASE_URL = 'https://woadbnxpodnubevgbbqyh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvYWRibnhwb2RudWJldmdiYnF5aCIsInJvbGUiOiJhbm9uIiwGlhdCI6MTczODE5OTQ2OCwiZXhwIjoyMDUzNzc1NDY4fQ.sb_publishable_gfrtfcNDZE1AOSik0uuctig_k8cNw4fE';
-
-        window.supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    </script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap');
-        *{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-        body{font-family:Inter,sans-serif;background:#030406;color:#36c9f6;overflow-x:hidden;min-height:100vh;padding-bottom:6rem}
-        .font-cyber{font-family:Orbitron,sans-serif}
-        ::-webkit-scrollbar{width:4px}
-        ::-webkit-scrollbar-track{background:#030406}
-        ::-webkit-scrollbar-thumb{background:#36c9f6;border-radius:4px}
-        @keyframes f{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(1.4)}}
-        @keyframes s{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-        @keyframes i{from{opacity:1;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes c{0%{transform:translateY(-10vh)rotate(0deg);opacity:1}100%{transform:translateY(100vh)rotate(720deg);opacity:0}}
-        .af{animation:f .4s ease-out forwards;position:absolute;z-index:100;pointer-events:none;font-family:Orbitron,sans-serif}
-        .as{animation:s .3s ease-in-out}
-        .ai{animation:i .4s ease-out forwards}
-        .tb{transition:transform .08s cubic-bezier(.4,0,.2,1);will-change:transform}
-        .tb:active{transform:scale(.88)}
-        .pa{position:absolute;width:0px;height:0px;background:#36c9f6;border-radius:50%;pointer-events:none;z-index:99}
-        .cf{position:fixed;width:100px;height:1px;z-index:200;pointer-events:none}
-        .tc{display:none;opacity:0;transition:opacity .3s ease}
-        .ta{display:block;opacity:1}
-        .nb{transition:all .2s ease}
-        .nb.a{color:#fff;text-shadow:0 0 10px rgba(54,201,246,.6)}
-        .nb.a span{filter:drop-shadow(0 0 8px rgba(54,201,246,.8))}
-        .gp{background:rgba(20,25,35,.7);backdrop-filter:blur(12px);border:1px solid rgba(54,201,246,.15);border-radius:1rem}
-        .el{background:#ef4442!important;box-shadow:0 0 8px #ef4444!important}
-        .en{background:#f59e0b!important;box-shadow:0 0 8px #f59e0b!important}
-        #ls{position:fixed;inset:0;background:#030406;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center}
-        .lr{width:60px;height:60px;border:3px solid rgba(54,201,246,.1);border-top-color:#36c9f6;border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .dc{font-family:Orbitron,monospace;background:rgba(54,201,246,.1);border:1px solid rgba(54,201,246,.4);border-radius:1px solid rgba(54,201,246,.2);backdrop-filter:blur(8px)}
-        #tc button{background:rgba(54,201,246,.15)!important;border:1px solid rgba(54,201,246,.5)!important;border-radius:12px!important}
-        .bt{background:linear-gradient(135deg,#36c9f6 0%,#0ea5e9 100%);color:#030406;font-weight:800;border-radius:12px;padding:12px;margin-top:12px;transition:width .3s}
-        .bs{background:linear-gradient(135deg,#bbfbf24 0%,#f59e0b 100%);color:#030406;font-weight:800;border-radius:12px;padding:12px;margin-top:12px;transition:width .3s}
-        .gift-card{position:relative;overflow:hidden;border:1px solid rgba(30,40,55,.9)!important;box-shadow:0 0 12px px rgba(0,0,0,0.5)}
-        .img-wrap{width:100%;aspect-ratio:1/1;border-radius:.75rem;overflow:hidden;margin-bottom:.75rem;border:1px solid rgba(54,201,246,.2)}
-        .img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
-        .bar{width:100%;background:rgba(0,0,0,.5);height:4px;border-radius:2px;margin-top:4px;overflow:hidden}
-        .stb{background:linear-gradient(90deg,#36c9f6,#0ea5e9);height:100%;transition:width .5s shadow;border-radius:12px;margin-bottom:12px}
-        .claim-btn{background:linear-gradient(135deg,#bbfbf24,#f59e0b);color:#030406;font-weight:900;border-radius:12px;padding:12px;box-shadow:0 0 25px rgba(251,191,36,.6)}
-        .pg{0 0 25px rgba(251,191,36,.6)}
-        .badge-hst{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px}
-        .badge-vip{background:linear-gradient(135deg,#9c3aaf,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px}
-        .badge-new{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px}
-        .price-tag{background:rgba(3,4,6,.8);border:1px solid rgba(54,201,246,.4);border-radius:4px 10px;padding:4px 10px;font-family:Orbitron,monospace;font-weight:700;font-size:12px;color:#fff}
-        .inv-card{border:1px solid rgba(54,201,246,.15);border-radius:12px;transition:all .2s}
-        .inv-card:active{transform:scale(.97)}
-        .inv-img{width:100%;aspect-ratio:1/1;object-fit:cover}
-        .rank-podium-1{border-color:#fbbf24!important;box-shadow:0 0 20px rgba(251,191,36,.2)}
-        .rank-podium-2{border-color:#9ca3af!important}
-        .rank-podium-3{border-color:#af97316!important}
-        .rank-row{transition:all .2s}
-        .rank-row.me{background:rgba(54,201,246,.08);border:1px solid rgba(54,201,246,.3)}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ICE DARCY WORLD</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap');
+*{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,sans-serif;background:#030406;color:#36c9f6;overflow-x:hidden;min-height:100vh;padding-bottom:6rem;user-select:none}
+.font-cyber{font-family:Orbitron,sans-serif}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#030406}
+::-webkit-scrollbar-thumb{background:#36c9f6;border-radius:4px}
+@keyframes f{0%{opacity:1;transform:translateY(0)scale(1)}100%{opacity:0;transform:translateY(-80px)scale(1.4)}}
+@keyframes s{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes i{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes c{0%{transform:translateY(-10vh)rotate(0deg);opacity:1}100%{transform:translateY(100vh)rotate(720deg);opacity:0}}
+.af{animation:f 1s ease-out forwards;position:absolute;z-index:100;pointer-events:none;font-family:Orbitron,sans-serif;font-weight:900;font-size:1.125rem}
+.as{animation:s .3s ease-in-out}
+.ai{animation:i .4s ease-out forwards}
+.tb{transition:transform .08s cubic-bezier(.4,0,.2,1);will-change:transform}
+.tb:active{transform:scale(.88)}
+.pa{position:absolute;width:6px;height:6px;background:#36c9f6;border-radius:50%;pointer-events:none;z-index:99}
+.cf{position:fixed;width:10px;height:10px;z-index:200;pointer-events:none}
+.tc{display:none;opacity:0;transition:opacity .3s ease}
+.tc.a{display:block;opacity:1}
+.nb{transition:all .2s ease}
+.nb.a{color:#fff;text-shadow:0 0 10px rgba(54,201,246,.6)}
+.nb.a span{filter:drop-shadow(0 0 8px rgba(54,201,246,.8))}
+.gp{background:rgba(20,25,35,.7);backdrop-filter:blur(12px);border:1px solid rgba(54,201,246,.15);border-radius:1rem}
+.el{background:#ef4444!important;box-shadow:0 0 8px #ef4444!important}
+.em{background:#f59e0b!important;box-shadow:0 0 8px #f59e0b!important}
+#ls{position:fixed;inset:0;background:#030406;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s}
+.lr{width:60px;height:60px;border:3px solid rgba(54,201,246,.1);border-top-color:#36c9f6;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dc{background:linear-gradient(135deg,rgba(54,201,246,.1) 0%,rgba(54,201,246,.02) 100%);border:1px solid rgba(54,201,246,.3);border-radius:1rem}
+.eo{background:rgba(3,4,6,.92);backdrop-filter:blur(8px)}
+.cd{font-family:Orbitron,monospace;background:rgba(54,201,246,.1);border:1px solid rgba(54,201,246,.3);border-radius:8px;padding:6px 10px;min-width:44px;text-align:center;color:#fff}
+#tc button{background:rgba(54,201,246,.15)!important;border:1px solid rgba(54,201,246,.5)!important;border-radius:12px!important;color:#36c9f6!important;font-size:11px!important;font-weight:700!important;padding:6px 12px!important;height:auto!important}
+.bt{background:linear-gradient(135deg,#36c9f6 0%,#0ea5e9 100%);color:#030406;font-weight:800;border-radius:12px;padding:10px 16px;font-size:11px;border:none;cursor:pointer;box-shadow:0 0 15px rgba(54,201,246,.3)}
+.bs{background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 100%);color:#030406;font-weight:800;border-radius:12px;padding:10px 16px;font-size:11px;border:none;cursor:pointer;box-shadow:0 0 15px rgba(251,191,36,.3)}
+.gift-card{position:relative;overflow:hidden;border:1px solid rgba(30,40,55,.9)!important;box-shadow:0 8px 32px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04)!important}
+.img-wrap{width:100%;aspect-ratio:1/1;border-radius:.75rem;overflow:hidden;margin-bottom:.75rem;border:1px solid rgba(54,201,246,.1);background:linear-gradient(135deg,#0a0f1a 0%,#030406 100%)}
+.img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.stock-bar{width:100%;background:rgba(0,0,0,.5);height:4px;border-radius:2px;margin-top:4px;overflow:hidden}
+.stock-fill{background:linear-gradient(90deg,#36c9f6,#0ea5e9);height:100%;transition:width .3s}
+.gift-progress{background:rgba(20,25,35,.9);border:1px solid rgba(54,201,246,.2);border-radius:1rem;padding:12px;margin-bottom:16px}
+.gift-claim-btn{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000;font-weight:900;border-radius:12px;padding:10px 16px;font-size:12px;border:none;cursor:pointer;box-shadow:0 0 20px rgba(251,191,36,.4);animation:pg 2s infinite}
+@keyframes pg{0%,100%{box-shadow:0 0 10px rgba(251,191,36,.3)}50%{box-shadow:0 0 25px rgba(251,191,36,.6)}}
+.badge-hot{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:999px;box-shadow:0 0 8px rgba(239,68,68,.5)}
+.badge-vip{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:999px;box-shadow:0 0 8px rgba(168,85,247,.5)}
+.badge-new{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:999px;box-shadow:0 0 8px rgba(34,197,94,.5)}
+.price-tag{background:rgba(3,4,6,.8);border:1px solid rgba(54,201,246,.4);border-radius:8px;padding:4px 10px;font-family:Orbitron,monospace;font-weight:900;font-size:13px;color:#fbbf24;text-shadow:0 0 8px rgba(251,191,36,.4)}
+.inv-card{background:rgba(15,20,30,.8);border:1px solid rgba(54,201,246,.15);border-radius:1rem;overflow:hidden;transition:transform .2s}
+.inv-card:active{transform:scale(.97)}
+.inv-img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.rank-podium-1{border-color:#fbbf24!important;box-shadow:0 0 20px rgba(251,191,36,.2)}
+.rank-podium-2{border-color:#9ca3af!important}
+.rank-podium-3{border-color:#f97316!important}
+.rank-row{transition:all .2s}
+.rank-row.me{background:rgba(54,201,246,.08);border:1px solid rgba(54,201,246,.3)}
+</style>
 </head>
 <body class="bg-[#030406] text-[#36c9f6]">
 
-    <div id="ls"><div class="lr mb-4"></div><b class="font-cyber text-xl font-bold tracking-widest">ICE DARCY WORLD</b></div>
+<div id="ls"><div class="lr mb-4"></div><h2 class="font-cyber text-xl font-bold tracking-widest">ICE DARCY WORLD</h2><p class="text-xs text-[#36c9f6]/50 mt-2">INITIALIZING...</p></div>
 
-    <header class="p-3 border-b border-[#31c9f6/20] flex justify-between items-center bg-[#030406]/90 backdrop-blur fixed top-0 w-full z-50">
-        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span><b class="font-cyber tracking-wider text-sm">ICE DARCY</b></div>
-        <div id="sb" class="hidden bg-orange-500/10 border border-orange-500/40 px-2 py-1 rounded-full text-xs font-bold text-orange-400">🔥 0</div>
-        <div id="bg" class="bg-[#36c9f6]/10 border border-[#36c9f6]/40 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5"><span class="font-cyber text-white" id="ub">0.00</span> 💎</div>
-    </header>
+<header class="p-3 border-b border-[#36c9f6]/20 flex justify-between items-center bg-[#030406]/90 backdrop-blur fixed top-0 w-full z-50">
+<div class="flex items-center gap-2"><span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span><h1 id="ud" class="text-sm font-bold tracking-widest uppercase font-cyber">ICE DARCY WORLD</h1></div>
+<div class="flex items-center gap-2">
+<div id="sb" class="hidden bg-orange-500/10 border border-orange-500/40 px-2 py-1 rounded-full text-xs font-bold text-orange-400 items-center gap-1"><span>🔥</span><span id="sn">0</span></div>
+<div class="bg-[#36c9f6]/10 border border-[#36c9f6]/40 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-[0_0_10px_rgba(54,201,246,0.3)]">⚡ Lvl <span id="ln">1</span> | 💎 <span id="dn">0</span></div>
+</div>
+</header>
 
-    <main class="pt-20 p-4 max-w-md mx-auto">
+<main class="pt-20 p-4 max-w-md mx-auto">
 
-        <!-- SHOP -->
-        <section id="t-shop" class="tc a">
-            <div class="flex justify-between items-center mb-4 ai">
-                <h2 class="text-2xl font-black tracking-wider uppercase text-white font-cyber">BLACK ICE</h2>
-                <div id="tc" class="dc text-xs font-bold px-3 py-1 rounded-full text-white flex items-center gap-1.5">⚡ <span id="tus">0</span> TON</div>
-            </div>
+<!-- SHOP -->
+<section id="t-shop" class="tc a">
+<div class="flex justify-between items-center mb-4 ai">
+<div><h2 class="text-2xl font-black tracking-wider uppercase text-white font-cyber">BLACK ICE</h2><p class="text-xs text-[#36c9f6]/60">EXCLUSIVE NFT COLLECTION</p></div>
+<div id="tc"></div>
+</div>
 
-            <div id="gp-card" class="gp p-4 shadow-lg ai gift-card mb-4">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-bold text-[#fbfbf24]">🎁 BLACK ICE REWARD</span>
-                    <span id="gp-text" class="text-[10px] font-cyber text-[#36c9f6]/70">0 / 1,000,000</span>
-                </div>
-                <div class="w-full bg-black/50 h-2 rounded-full overflow-hidden border border-[#36c9f6]/20 mb-2">
-                    <div id="gp-bar" class="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] h-full w-0 transition-all duration-500 shadow-[0_0_10px_#fbfbf24]"></div>
-                </div>
-                <button id="gp-btn" onclick="app.cl()" class="claim-btn w-full hidden">CLAIM REWARD</button>
-                <p id="gp-msg" class="text-[10px] text-center text-[#36c9f6]/60 mt-1">Tap to reach 1M shards & win a BLACK ICE NFT</p>
-            </div>
+<div id="gp-card" class="gift-progress ai">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-[#fbbf24]">🎁 BLACK ICE REWARD</span>
+<span id="gp-text" class="text-[10px] font-cyber text-[#36c9f6]">0 / 1,000,000</span>
+</div>
+<div class="w-full bg-black/50 h-2 rounded-full overflow-hidden border border-[#36c9f6]/20 mb-2">
+<div id="gp-bar" class="bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] h-full w-0 transition-all duration-500 shadow-[0_0_10px_#fbbf24] rounded-full"></div>
+</div>
+<button id="gp-btn" onclick="app.clG()" class="gift-claim-btn w-full hidden">CLAIM REWARD</button>
+<p id="gp-msg" class="text-[10px] text-center text-[#36c9f6]/60 mt-1">Tap to reach 1M shards & win a BLACK ICE NFT</p>
+</div>
 
-            <div class="space-y-4">
-                <div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.05s">
-                    <div class="relative">
-                        <div class="img-wrap"><img src="https://i.postimg.cc/VTpGQfDf/1000118870.png" alt="Lucifer"></div>
-                        <div class="absolute top-3 left-3 badge-hst">🔥 #001</div>
-                        <div class="absolute top-3 right-3 price-tag">666 ⭐️</div>
-                    </div>
-                    <h3 class="text-base font-bold text-white font-cyber tracking-wider">Lucifer</h3>
-                    <p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
-                    <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="stock-lucifer" class="text-[10px] font-cyber text-[#36c9f6]">100%</span></div>
-                    <div class="bar"><div id="stb-lucifer" class="stb" style="width:100%"></div></div>
-                    <div class="grid grid-cols-2 gap-3 mt-3">
-                        <button onclick="app.bt(6.66,'LUCIFER')" class="bt">💎 6.66 TON</button>
-                        <button onclick="app.bs('lucifer','LUCIFER',666)" class="bs">⭐️ 666 STARS</button>
-                    </div>
-                </div>
+<div class="space-y-4">
 
-                <div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.1s">
-                    <div class="relative">
-                        <div class="img-wrap"><img src="https://i.postimg.cc/CxtrGWfb/Picsart-26-08-15-15-07-58-794.png" alt="Yakh-e Doodi"></div>
-                        <div class="absolute top-3 left-3 badge-vip">💎 #002</div>
-                        <div class="absolute top-3 right-3 price-tag">666 ⭐️</div>
-                    </div>
-                    <h3 class="text-base font-bold text-white font-cyber tracking-wider">Yakh-e Doodi</h3>
-                    <p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
-                    <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="stock-yakh_e_doodi" class="text-[10px] font-cyber text-[#36c9f6]">100%</span></div>
-                    <div class="bar"><div id="stb-yakh_e_doodi" class="stb" style="width:100%"></div></div>
-                    <div class="grid grid-cols-2 gap-3 mt-3">
-                        <button onclick="app.bt(6.66,'YAKH-E DOODI')" class="bt">💎 6.66 TON</button>
-                        <button onclick="app.bs('yakh_e_doodi','YAKH-E DOODI',666)" class="bs">⭐️ 666 STARS</button>
-                    </div>
-                </div>
+<div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.05s">
+<div class="relative">
+<div class="img-wrap"><img src="https://i.postimg.cc/vTyGQFDF/1000118870.png" alt="Lucifer"></div>
+<div class="absolute top-3 left-3 badge-hot">🔥 #001</div>
+<div class="absolute top-3 right-3 price-tag">666 ⭐</div>
+</div>
+<h3 class="text-base font-bold text-white font-cyber tracking-wider">Lucifer</h3>
+<p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
+<div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="st-lucifer" class="text-xs font-black font-cyber text-white">666</span></div>
+<div class="stock-bar"><div id="stb-lucifer" class="stock-fill" style="width:100%"></div></div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<button onclick="app.bT(6.66,'LUCIFER')" class="bt">💎 6.66 TON</button>
+<button onclick="app.bS('lucifer','LUCIFER',666)" class="bs">⭐ 666 STARS</button>
+</div>
+</div>
 
-                <div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.15s">
-                    <div class="relative">
-                        <div class="img-wrap"><img src="https://i.postimg.cc/L5TOLzXs/Picsart-26-08-19-18-16-20-992.png" alt="BOUND"></div>
-                        <div class="absolute top-3 left-3 badge-new">✨ #003</div>
-                        <div class="absolute top-3 right-3 price-tag">666 ⭐️</div>
-                    </div>
-                    <h3 class="text-base font-bold text-white font-cyber tracking-wider">BOUND</h3>
-                    <p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
-                    <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="stock-bound" class="text-[10px] font-cyber text-[#36c9f6]">100%</span></div>
-                    <div class="bar"><div id="stb-bound" class="stb" style="width:100%"></div></div>
-                    <div class="grid grid-cols-2 gap-3 mt-3">
-                        <button onclick="app.bt(6.66,'BOUND')" class="bt">💎 6.66 TON</button>
-                        <button onclick="app.bs('bound','BOUND',666)" class="bs">⭐️ 666 STARS</button>
-                    </div>
-                </div>
+<div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.1s">
+<div class="relative">
+<div class="img-wrap"><img src="https://i.postimg.cc/CxtrGMFb/Picsart-26-08-19-19-07-58-794.png" alt="Yakh-e Doodi"></div>
+<div class="absolute top-3 left-3 badge-vip">💎 #002</div>
+<div class="absolute top-3 right-3 price-tag">666 ⭐</div>
+</div>
+<h3 class="text-base font-bold text-white font-cyber tracking-wider">Yakh-e Doodi</h3>
+<p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
+<div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="st-yakh_e_doodi" class="text-xs font-black font-cyber text-white">666</span></div>
+<div class="stock-bar"><div id="stb-yakh_e_doodi" class="stock-fill" style="width:100%"></div></div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<button onclick="app.bT(6.66,'YAKH-E DOODI')" class="bt">💎 6.66 TON</button>
+<button onclick="app.bS('yakh_e_doodi','YAKH-E DOODI',666)" class="bs">⭐ 666 STARS</button>
+</div>
+</div>
 
-                <div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.2s">
-                    <div class="relative">
-                        <div class="img-wrap"><img src="https://i.postimg.cc/0j0K15QW/Picsart-26-08-19-19-06-18-283.png" alt="Broken star"></div>
-                        <div class="absolute top-3 left-3 badge-new">✨ #004</div>
-                        <div class="absolute top-3 right-3 price-tag">666 ⭐️</div>
-                    </div>
-                    <h3 class="text-base font-bold text-white font-cyber tracking-wider">Broken star</h3>
-                    <p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
-                    <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="stock-broken_star" class="text-[10px] font-cyber text-[#36c9f6]">100%</span></div>
-                    <div class="bar"><div id="stb-broken_star" class="stb" style="width:100%"></div></div>
-                    <div class="grid grid-cols-2 gap-3 mt-3">
-                        <button onclick="app.bt(6.66,'BROKEN STAR')" class="bt">💎 6.66 TON</button>
-                        <button onclick="app.bs('broken_star','BROKEN STAR',666)" class="bs">⭐️ 666 STARS</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.15s">
+<div class="relative">
+<div class="img-wrap"><img src="https://i.postimg.cc/L5T0LzXs/Picsart-26-08-19-18-16-20-992.png" alt="BOUND"></div>
+<div class="absolute top-3 left-3 badge-new">✨ #003</div>
+<div class="absolute top-3 right-3 price-tag">666 ⭐</div>
+</div>
+<h3 class="text-base font-bold text-white font-cyber tracking-wider">BOUND</h3>
+<p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
+<div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="st-bound" class="text-xs font-black font-cyber text-white">666</span></div>
+<div class="stock-bar"><div id="stb-bound" class="stock-fill" style="width:100%"></div></div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<button onclick="app.bT(6.66,'BOUND')" class="bt">💎 6.66 TON</button>
+<button onclick="app.bS('bound','BOUND',666)" class="bs">⭐ 666 STARS</button>
+</div>
+</div>
 
-        <!-- COLLECTION -->
-        <section id="t-coll" class="tc">
-            <div class="mb-6 ai"><h2 class="text-2xl font-black text-white font-cyber">MY COLLECTION</h2></div>
-            <div id="cl-grid" class="grid grid-cols-2 gap-3">
-                <p id="cl-empty" class="col-span-2 text-center text-[#36c9f6]/40 text-sm py-12">No items in your collection yet.</p>
-            </div>
-        </section>
+<div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.2s">
+<div class="relative">
+<div class="img-wrap"><img src="https://i.postimg.cc/gjFPNqmv/Picsart-26-08-19-18-54-14-817.png" alt="ICE CRY"></div>
+<div class="absolute top-3 left-3 badge-hot">❄️ #004</div>
+<div class="absolute top-3 right-3 price-tag">666 ⭐</div>
+</div>
+<h3 class="text-base font-bold text-white font-cyber tracking-wider">ICE CRY</h3>
+<p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
+<div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="st-ice_cry" class="text-xs font-black font-cyber text-white">666</span></div>
+<div class="stock-bar"><div id="stb-ice_cry" class="stock-fill" style="width:100%"></div></div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<button onclick="app.bT(6.66,'ICE CRY')" class="bt">💎 6.66 TON</button>
+<button onclick="app.bS('ice_cry','ICE CRY',666)" class="bs">⭐ 666 STARS</button>
+</div>
+</div>
 
-        <!-- FROST TAP -->
-        <section id="t-frost" class="tc flex flex-col items-center pt-2">
-            <div id="dr" class="w-full dc p-4 mb-6 hidden ai"><div class="flex justify-between items-center"><span class="text-xs text-white/80">⚡ FROST DROP COMING SOON</span><span id="dt" class="text-xs font-cyber text-white">00:00:00</span></div></div>
-            <div class="text-center mb-2 ai"><h2 class="text-3xl font-black text-white font-cyber">FROST TAP</h2></div>
-            <div class="relative flex items-center justify-center my-6"><span id="sc" class="text-5xl font-black text-white font-cyber">0</span></div>
-            <div class="grid grid-cols-2 gap-3 w-full mt-6"><div class="gp p-3 text-center"><p class="text-[10px] text-[#36c9f6]/60">FROST PER TAP</p><p id="tp" class="text-lg font-bold font-cyber text-white mt-1">1</p></div><div class="gp p-3 text-center"><p class="text-[10px] text-[#36c9f6]/60">ENERGY</p><p class="text-lg font-bold font-cyber text-white mt-1"><span id="en-c">1000</span>/<span id="en-m">1000</span></p></div></div>
-            <div class="w-full gp p-4 mt-4 relative overflow-hidden"><div class="flex justify-between items-center mb-1 text-xs"><span class="text-white/70">RECOVERY</span><span id="er-t" class="font-cyber text-white">00:00</span></div><div class="w-full bg-black/40 h-2 rounded-full overflow-hidden border border-[#36c9f6]/20"><div id="er-b" class="bg-[#36c9f6] h-full w-full"></div></div></div>
-        </section>
+<div class="gp p-4 shadow-lg ai gift-card" style="animation-delay:.25s">
+<div class="relative">
+<div class="img-wrap"><img src="https://i.postimg.cc/pXjHhSQJ/Picsart-26-08-19-19-30-58-649.png" alt="Broken star"></div>
+<div class="absolute top-3 left-3 badge-vip">🌟 #005</div>
+<div class="absolute top-3 right-3 price-tag">666 ⭐</div>
+</div>
+<h3 class="text-base font-bold text-white font-cyber tracking-wider">Broken star</h3>
+<p class="text-[#36c9f6]/50 text-[10px] mt-0.5 mb-2 uppercase tracking-widest">BLACK ICE Collection</p>
+<div class="flex justify-between items-center mb-1"><span class="text-[10px] text-[#36c9f6]/60">REMAINING</span><span id="st-broken_star" class="text-xs font-black font-cyber text-white">666</span></div>
+<div class="stock-bar"><div id="stb-broken_star" class="stock-fill" style="width:100%"></div></div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<button onclick="app.bT(6.66,'BROKEN STAR')" class="bt">💎 6.66 TON</button>
+<button onclick="app.bS('broken_star','BROKEN STAR',666)" class="bs">⭐ 666 STARS</button>
+</div>
+</div>
 
-        <!-- RANKS -->
-        <section id="t-rank" class="tc">
-            <div class="mb-6 ai"><h2 class="text-2xl font-black text-white font-cyber">LEADERBOARD</h2></div>
-            <div id="rp" class="flex justify-between items-end gap-3 mb-6 ai" style="animation-delay:.05s"></div>
-            <div id="ll" class="space-y-2"></div>
-            <p class="text-[10px] text-center text-[#36c9f6]/30 mt-4">Updates every 60 seconds</p>
-        </section>
+</div>
+</section>
 
-    </main>
+<!-- COLLECTION -->
+<section id="t-coll" class="tc">
+<div class="mb-6 ai"><h2 class="text-2xl font-black text-white font-cyber">MY COLLECTION</h2><p class="text-xs text-[#36c9f6]/60">OWNED BLACK ICE NFTs</p></div>
+<div id="cl-grid" class="grid grid-cols-2 gap-3">
+<p id="cl-empty" class="col-span-2 text-center text-[#36c9f6]/40 text-sm py-12">No items yet. Tap or buy to collect!</p>
+</div>
+</section>
 
-    <nav class="fixed bottom-0 w-full bg-[#030406]/95 backdrop-blur-md border-t border-[#31c9f6]/20 p-2 flex justify-around items-center z-50">
-        <button onclick="app.sw('shop')" id="n-shop" class="nb a flex flex-col items-center py-1 px-3 rounded-xl"><span class="text-lg">⚡</span><span class="text-[10px] font-bold font-cyber mt-0.5">SHOP</span></button>
-        <button onclick="app.sw('frost')" id="n-frost" class="nb flex flex-col items-center py-1 px-3 rounded-xl"><span class="text-lg">❄️</span><span class="text-[10px] font-bold font-cyber mt-0.5">TAP</span></button>
-        <button onclick="app.sw('rank')" id="n-rank" class="nb flex flex-col items-center py-1 px-3 rounded-xl"><span class="text-lg">👑</span><span class="text-[10px] font-bold font-cyber mt-0.5">RANKS</span></button>
-        <button onclick="app.sw('coll')" id="n-coll" class="nb flex flex-col items-center py-1 px-3 rounded-xl"><span class="text-lg">🎒</span><span class="text-[10px] font-bold font-cyber mt-0.5">VAULT</span></button>
-    </nav>
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        const C = {m: 'https://dar1cyycrips-maker.github.io/ice-darcy-world/tonconnect-manifest.json'};
-        class A{constructor(){this.c=null;this.e=true}i(){if(!this.c)this.c=new(window.AudioContext||window.webkitAudioContext)();if(this.e){this.c.resume();this.e=false}}}
-        class S{constructor(p,k){this.p=p+k}g(k){try{const v=localStorage.getItem(this.p+k);return v?JSON.parse(v):null}catch(e){return null}}s(k,v){try{localStorage.setItem(this.p+k,JSON.stringify(v))}catch(e){}}}
-        class E{constructor(s,m,r){this.s=s;this.m=m;this.r=r*60*1000;this.c=10;this.od=null;this.os=null;this.op=null;this.f=false}}
-        class App{constructor(){this.t=window.Telegram.WebApp;this.s=new S('_id_');this.a=new A();this.od=new E(this,60,1);this.es=new E(this,1440,10);this.eb=new E(this,10080,50);this.r=null;this.init()}}
-        const app=new App();
-    </script>
-</body>
-</html>
+<!-- FROST TAP -->
+<section id="t-frost" class="tc flex flex-col items-center pt-2">
+<div id="dr" class="w-full dc p-4 mb-6 hidden ai"><div class="flex justify-between items-center"><div><h3 class="text-sm font-bold text-white">🎁 DAILY</h3><p class="text-xs text-[#36c9f6]/70">Day <span id="rd">1</span></p></div><button onclick="app.cD2()" id="cb" class="bg-green-500 text-black px-4 py-2 rounded-xl text-xs font-extrabold">CLAIM +50</button></div></div>
+<div class="text-center mb-2 ai"><h2 class="text-3xl font-black text-white font-cyber">FROST TAP</h2><p class="text-xs text-[#36c9f6]/60 uppercase mt-1">Tap to earn</p></div>
+<div class="relative flex items-center justify-center my-6" id="ta"><div class="absolute w-56 h-56 rounded-full bg-[#36c9f6]/10 blur-2xl animate-pulse"></div><button id="tb" class="tb relative w-40 h-40 rounded-full border-[3px] border-[#36c9f6] shadow-[0_0_50px_rgba(54,201,246,0.3)] overflow-hidden bg-[#030406]"><img src="https://i.postimg.cc/d3rbWj89/1787215341087.jpg" class="w-full h-full object-cover opacity-90"></button></div>
+<div class="text-center ai"><span id="sc" class="text-5xl font-black text-white font-cyber">0</span><p class="text-xs text-[#36c9f6]/70 mt-1 uppercase">Total Shards</p></div>
+<div class="grid grid-cols-2 gap-3 w-full mt-6"><div class="gp p-3 text-center"><p class="text-[10px] text-[#36c9f6]/60 uppercase">Taps Today</p><p id="tt" class="text-lg font-bold text-white font-cyber">0</p></div><div class="gp p-3 text-center"><p class="text-[10px] text-[#36c9f6]/60 uppercase">Best Streak</p><p id="bs" class="text-lg font-bold text-white font-cyber">0</p></div></div>
+<div class="w-full gp p-4 mt-4 relative overflow-hidden"><div class="flex justify-between text-xs font-bold mb-2"><span>⚡ ENERGY</span><span id="et" class="font-cyber">1000/1000</span></div><div class="w-full bg-black/50 h-3 rounded-full overflow-hidden border border-[#36c9f6]/20"><div id="eb" class="bg-[#36c9f6] h-full w-full transition-all duration-200 shadow-[0_0_10px_#36c9f6] rounded-full"></div></div><p id="ew" class="text-[10px] text-red-400 mt-1.5 hidden text-center font-bold animate-pulse">⚠️ DEPLETED</p><div id="edo" class="eo absolute inset-0 rounded-2xl flex-col items-center justify-center hidden"><p class="text-xs font-bold text-red-400 mb-2 animate-pulse">⚡ DEPLETED</p><div class="flex items-center gap-2 mb-2"><div class="cd" id="ch">00</div><span class="text-white/50">:</span><div class="cd" id="cm">00</div><span class="text-white/50">:</span><div class="cd" id="cs">00</div></div><p class="text-[10px] text-[#36c9f6]/60 mb-3">Auto-refill <span id="cl">02:00:00</span></p><button onclick="app.rS()" class="bs text-xs px-4 py-2">⭐ REFILL (6)</button></div></div>
+</section>
+
+<!-- RANKS -->
+<section id="t-rank" class="tc">
+<div class="mb-6 ai"><h2 class="text-2xl font-black text-white font-cyber">LEADERBOARD</h2><p class="text-xs text-[#36c9f6]/60">LIVE TOP COLLECTORS</p></div>
+<div id="rp" class="flex justify-center items-end gap-3 mb-6 ai" style="animation-delay:.1s"></div>
+<div id="ll" class="space-y-2"></div>
+<p class="text-[10px] text-center text-[#36c9f6]/30 mt-4">Updates every 60 seconds</p>
+</section>
+
+</main>
+
+<nav class="fixed bottom-0 w-full bg-[#030406]/95 backdrop-blur-md border-t border-[#36c9f6]/20 flex justify-around p-3 z-50">
+<button onclick="app.sw('shop')" id="n-shop" class="nb a flex flex-col items-center text-xs font-bold gap-0.5 text-white"><span class="text-lg">🛒</span>SHOP</button>
+<button onclick="app.sw('frost')" id="n-frost" class="nb flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5"><span class="text-lg">💎</span>FROST</button>
+<button onclick="app.sw('rank')" id="n-rank" class="nb flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5"><span class="text-lg">🏆</span>RANKS</button>
+<button onclick="app.sw('coll')" id="n-coll" class="nb flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5"><span class="text-lg">🎒</span>BAG</button>
+</nav>
+
+<script>const C={m:'https://dar1cyycrips-maker.github.io/ice-darcy-world/tonconnect-manifest.json',w:'UQAQ4D1q8hoC2mOiLBgx8ZSguB-MdTcKLAylFfeyWkxbC5Gp',i:{lucifer:'https://t.me/$YOUR_BOT?start=invoice_lucifer_666',yakh_e_doodi:'https://t.me/$YOUR_BOT?start=invoice_yakh_e_doodi_666',bound:'https://t.me/$YOUR_BOT?start=invoice_bound_666',ice_cry:'https://t.me/$YOUR_BOT?start=invoice_ice_cry_666',broken_star:'https://t.me/$YOUR_BOT?start=invoice_broken_star_666',energy:'https://t.me/$YOUR_BOT?start=invoice_energy_6'}};
+class A{constructor(){this.c=null;this.e=true}i(){if(!this.c)this.c=new(window.AudioContext||window.webkitAudioContext)()}pT(){if(!this.e||!this.c)return;const o=this.c.createOscillator(),g=this.c.createGain();o.connect(g);g.connect(this.c.destination);o.frequency.setValueAtTime(800,this.c.currentTime);o.frequency.exponentialRampToValueAtTime(1200,this.c.currentTime+0.05);g.gain.setValueAtTime(0.08,this.c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.c.currentTime+0.08);o.start(this.c.currentTime);o.stop(this.c.currentTime+0.08)}pL(){if(!this.e||!this.c)return;[523,659,784,1047].forEach((f,i)=>{const o=this.c.createOscillator(),g=this.c.createGain();o.connect(g);g.connect(this.c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.1,this.c.currentTime+i*0.1);g.gain.exponentialRampToValueAtTime(0.001,this.c.currentTime+i*0.1+0.2);o.start(this.c.currentTime+i*0.1);o.stop(this.c.currentTime+i*0.1+0.2)})}pE(){if(!this.e||!this.c)return;const o=this.c.createOscillator(),g=this.c.createGain();o.connect(g);g.connect(this.c.destination);o.frequency.setValueAtTime(200,this.c.currentTime);o.frequency.exponentialRampToValueAtTime(100,this.c.currentTime+0.15);g.gain.setValueAtTime(0.1,this.c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.c.currentTime+0.15);o.start(this.c.currentTime);o.stop(this.c.currentTime+0.15)}pR(){if(!this.e||!this.c)return;[440,554,659].forEach((f,i)=>{const o=this.c.createOscillator(),g=this.c.createGain();o.connect(g);g.connect(this.c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.1,this.c.currentTime+i*0.08);g.gain.exponentialRampToValueAtTime(0.001,this.c.currentTime+i*0.08+0.15);o.start(this.c.currentTime+i*0.08);o.stop(this.c.currentTime+i*0.08+0.15)})}}
+class S{constructor(){this.p='idw_'}k(k){return this.p+k}g(k){try{const v=localStorage.getItem(this.k(k));return v?JSON.parse(v):null}catch{return null}}s(k,v){localStorage.setItem(this.k(k),JSON.stringify(v))}gs(){return this.g('s')||0}ss(v){this.s('s',v)}gd(){return this.g('d')||0}sd(v){this.s('d',v)}gl(){return this.g('l')||1}sl(v){this.s('l',v)}ge(){return this.g('e')||1000}se(v){this.s('e',v)}ged(){return this.g('ed')}sed(v){this.s('ed',v)}gld(){return this.g('ld')||0}sld(v){this.s('ld',v)}gst(){return this.g('st')||0}sst(v){this.s('st',v)}gbs(){return this.g('bs')||0}sbs(v){this.s('bs',v)}gtt(){return this.g('tt')||0}stt(v){this.s('tt',v)}gltd(){return this.g('ltd')||''}sltd(v){this.s('ltd',v)}gu(){return this.g('u')||'PLAYER'}su(v){this.s('u',v)}gstock(k){const v=this.g('stock_'+k);return v===null?666:v}sstock(k,v){this.s('stock_'+k,v)}gg(){return this.g('gc')||0}sg(v){this.s('gc',v)}ginv(){return this.g('inv')||[]}sinv(v){this.s('inv',v)}aItem(id,name,img){const inv=this.ginv();inv.push({id,name,img,date:Date.now()});this.sinv(inv)}}
+class E{constructor(s,m,r){this.s=s;this.m=m;this.r=r*60*1000;this.c=10;this.od=null;this.or=null}ge(){let e=this.s.ge();const d=this.s.ged();if(e<=0&&d){const n=Date.now();if(n>=d+this.r){e=this.m;this.s.se(e);this.s.sed(null);if(this.or)this.or('auto')}}return e}co(){let e=this.ge();if(e<this.c)return false;e-=this.c;this.s.se(e);if(e<=0){this.s.sed(Date.now());if(this.od)this.od()}return true}ir(){this.s.se(this.m);this.s.sed(null);if(this.or)this.or('stars');return this.m}gt(){const d=this.s.ged();if(!d)return 0;return Math.max(0,d+this.r-Date.now())}id(){return this.ge()<=0}}
+class App{constructor(){this.t=window.Telegram.WebApp;this.s=new S();this.a=new A();this.e=new E(this.s,1000,120);this.tc=null;this.gi=[{id:'lucifer',name:'Lucifer',img:'https://i.postimg.cc/vTyGQFDF/1000118870.png'},{id:'yakh_e_doodi',name:'Yakh-e Doodi',img:'https://i.postimg.cc/CxtrGMFb/Picsart-26-08-19-19-07-58-794.png'},{id:'bound',name:'BOUND',img:'https://i.postimg.cc/L5T0LzXs/Picsart-26-08-19-18-16-20-992.png'},{id:'ice_cry',name:'ICE CRY',img:'https://i.postimg.cc/gjFPNqmv/Picsart-26-08-19-18-54-14-817.png'},{id:'broken_star',name:'Broken star',img:'https://i.postimg.cc/pXjHhSQJ/Picsart-26-08-19-19-30-58-649.png'}];this.e.od=()=>this.oD();this.e.or=(src)=>this.oR(src);this.i()}async i(){this.t.expand();this.t.ready();document.addEventListener('touchstart',()=>this.a.i(),{once:true});document.addEventListener('click',()=>this.a.i(),{once:true});this.iSt();this.lU();this.iTC();this.cD();this.cT();this.sEL();this.rU();this.rL();this.sCL();this.rColl();this.cG();setTimeout(()=>{const l=document.getElementById('ls');if(l){l.style.opacity='0';setTimeout(()=>l.remove(),500)}},3000)}iSt(){this.gi.forEach(it=>{if(this.s.gstock(it.id)===null)this.s.sstock(it.id,666)});if(this.s.gg()===null){const base=Math.floor(this.s.gs()/1000000);this.s.sg(base)}}lU(){let u="PLAYER";if(this.t.initDataUnsafe&&this.t.initDataUnsafe.user){const us=this.t.initDataUnsafe.user;u=us.username||us.first_name||"PLAYER";this.s.su(u)}else{u=this.s.gu()}document.getElementById('ud').innerText="@"+u;document.title="ICE DARCY WORLD"}iTC(){try{if(typeof TON_CONNECT_UI==='undefined'){console.warn('TON Connect not loaded');return}this.tc=new TON_CONNECT_UI.TonConnectUI({manifestUrl:C.m,buttonRootId:'tc'});this.tc.onStatusChange((w)=>{if(w){console.log('Connected:',w.account.address);this.h('success')}})}catch(err){console.error('TON Connect error:',err)}}sEL(){const t=document.getElementById('tb');t.addEventListener('pointerdown',(e)=>{e.preventDefault();this.hT(e)});t.addEventListener('contextmenu',(e)=>e.preventDefault())}hT(e){if(this.e.id()){this.h('error');this.a.pE();this.ft(e.clientX,e.clientY,"NO ENERGY!","#ef4444");document.getElementById('ta').classList.add('as');setTimeout(()=>document.getElementById('ta').classList.remove('as'),300);return}if(!this.e.co()){this.oD();return}const r=e.target.getBoundingClientRect();const x=e.clientX||(r.left+r.width/2);const y=e.clientY||(r.top+r.height/2);let sh=this.s.gs()+1,di=this.s.gd()+1,tt=this.s.gtt()+1,lv=this.s.gl();this.s.ss(sh);this.s.sd(di);this.s.stt(tt);if(di>=lv*100){lv++;this.s.sl(lv);this.a.pL();this.h('success');this.sC();this.sLU(lv)}else{this.a.pT();this.h('light')}this.ft(x,y,"+1","#fff");this.sP(x,y);this.sR(x,y);this.rU();this.cG()}oD(){this.rU();this.a.pE();this.h('error')}oR(src){this.rU();this.a.pR();this.h('success');if(src==='stars')this.ft(window.innerWidth/2,window.innerHeight/2,"REFILLED!","#fbbf24")}sCL(){setInterval(()=>{if(this.e.id()){const r=this.e.gt();if(r<=0)this.e.ge();else this.uCD(r)}},1000)}uCD(ms){const ts=Math.ceil(ms/1000),hr=Math.floor(ts/3600),mn=Math.floor((ts%3600)/60),sc=ts%60;document.getElementById('ch').innerText=String(hr).padStart(2,'0');document.getElementById('cm').innerText=String(mn).padStart(2,'0');document.getElementById('cs').innerText=String(sc).padStart(2,'0');document.getElementById('cl').innerText=String(hr).padStart(2,'0')+':'+String(mn).padStart(2,'0')+':'+String(sc).padStart(2,'0')}async bT(am,it){this.h('medium');if(!this.tc){this.t.showAlert('TON Connect not ready');return}if(!this.tc.connected){await this.tc.openModal();return}try{const nm=String(Math.round(am*1000000000));await this.tc.sendTransaction({validUntil:Math.floor(Date.now()/1000)+600,messages:[{address:C.w,amount:nm,payload:btoa("ICE:"+it).replace(/=/g,'')}]});const pidMap={'LUCIFER':'lucifer','YAKH-E DOODI':'yakh_e_doodi','BOUND':'bound','ICE CRY':'ice_cry','BROKEN STAR':'broken_star'};const pid=pidMap[it];if(pid){const cur=this.s.gstock(pid);if(cur>0){this.s.sstock(pid,cur-1);const itm=this.gi.find(x=>x.id===pid);if(itm)this.s.aItem(pid,itm.name,itm.img)}}this.h('success');this.a.pL();this.rU();this.rColl();this.t.showPopup({title:'✅ Sent',message:am+' TON for '+it,buttons:[{id:'ok',text:'OK'}]})}catch(err){if(err.message&&(err.message.includes('Rejected')||err.message.includes('Cancel')))return;this.t.showAlert('Payment failed')}}bS(pid,it,sp){this.h('medium');const url=C.i[pid];if(!url||url.includes('YOUR_BOT')){this.t.showPopup({title:'⚙️ Setup',message:'Set invoice URL in CONFIG.i.'+pid,buttons:[{id:'ok',text:'OK'}]});return}this.t.openInvoice(url,(st)=>{if(st==='paid'){const cur=this.s.gstock(pid);if(cur>0){this.s.sstock(pid,cur-1);const itm=this.gi.find(x=>x.id===pid);if(itm)this.s.aItem(pid,itm.name,itm.img)}this.h('success');this.a.pL();this.sC();this.rU();this.rColl();this.t.showPopup({title:'🎉 Done!',message:'Bought '+it+'! Remaining: '+(cur-1),buttons:[{id:'ok',text:'NICE!'}]})}else if(st==='failed')this.t.showAlert('Failed')})}rS(){this.h('medium');const url=C.i['energy'];if(!url||url.includes('YOUR_BOT')){this.t.showPopup({title:'⚙️ Setup',message:'Set energy invoice URL',buttons:[{id:'ok',text:'OK'}]});return}this.t.openInvoice(url,(st)=>{if(st==='paid'){this.e.ir();this.t.showPopup({title:'⚡ Refilled!',message:'Energy restored!',buttons:[{id:'ok',text:'GO!'}]})}else if(st==='failed')this.t.showAlert('Failed')})}cD(){const ld=this.s.gld(),nw=new Date(),ls=new Date(ld),nd=nw.toDateString()!==ls.toDateString();const dc=document.getElementById('dr'),cb=document.getElementById('cb');if(nd||ld===0){dc.classList.remove('hidden');cb.disabled=false;cb.innerText="CLAIM +50";cb.className="bg-green-500 text-black px-4 py-2 rounded-xl text-xs font-extrabold"}else{dc.classList.remove('hidden');cb.disabled=true;cb.innerText="CLAIMED";cb.className="bg-gray-600 text-gray-400 px-4 py-2 rounded-xl text-xs font-extrabold"}document.getElementById('rd').innerText=this.s.gst()+1}cD2(){const ld=this.s.gld(),nw=new Date(),ls=new Date(ld);if(nw.toDateString()===ls.toDateString()&&ld!==0)return;const y=new Date();y.setDate(y.getDate()-1);let st=this.s.gst();if(ls.toDateString()===y.toDateString())st++;else if(ld===0)st=1;else st=1;const bs=Math.max(st,this.s.gbs());let sh=this.s.gs()+50,di=this.s.gd()+50;this.s.ss(sh);this.s.sd(di);this.s.sst(st);this.s.sbs(bs);this.s.sld(Date.now());this.a.pL();this.h('success');this.sC();const cb=document.getElementById('cb');cb.disabled=true;cb.innerText="CLAIMED";cb.className="bg-gray-600 text-gray-400 px-4 py-2 rounded-xl text-xs font-extrabold";this.rU();this.ft(window.innerWidth/2,window.innerHeight/2,"+50","#36c9f6")}cT(){const td=new Date().toDateString();if(this.s.gltd()!==td){this.s.stt(0);this.s.sltd(td)}}cG(){const sh=this.s.gs(),earned=Math.floor(sh/1000000),claimed=this.s.gg(),pending=earned-claimed;const bar=document.getElementById('gp-bar'),txt=document.getElementById('gp-text'),btn=document.getElementById('gp-btn'),msg=document.getElementById('gp-msg');if(!bar)return;const prog=sh%1000000,pct=(prog/1000000)*100;bar.style.width=pct+'%';txt.innerText=prog.toLocaleString()+' / 1,000,000';if(pending>0){btn.classList.remove('hidden');btn.innerText='🎁 CLAIM REWARD ('+pending+')';msg.innerText='You earned '+pending+' BLACK ICE reward(s)!';msg.className='text-[10px] text-center text-[#fbbf24] font-bold mt-1 animate-pulse'}else{btn.classList.add('hidden');msg.innerText='Tap to reach 1M shards & win a BLACK ICE NFT';msg.className='text-[10px] text-center text-[#36c9f6]/60 mt-1'}}clG(){const pending=Math.floor(this.s.gs()/1000000)-this.s.gg();if(pending<=0)return;const avail=this.gi.filter(it=>this.s.gstock(it.id)>0);if(avail.length===0){this.t.showPopup({title:'❌ Sold Out',message:'All BLACK ICE items are sold out!',buttons:[{id:'ok',text:'OK'}]});return}const pick=avail[Math.floor(Math.random()*avail.length)];const st=this.s.gstock(pick.id)-1;this.s.sstock(pick.id,st);this.s.sg(this.s.gg()+1);this.s.aItem(pick.id,pick.name,pick.img);this.a.pL();this.h('success');this.sC();this.rU();this.rColl();this.t.showPopup({title:'🎉 BLACK ICE REWARD!',message:'You won: '+pick.name+'! Added to your Collection. Remaining: '+st,buttons:[{id:'ok',text:'SICK!'}]})}ft(x,y,t,co){const el=document.createElement('div');el.className='af';el.style.left=x+'px';el.style.top=y+'px';el.style.color=co;el.innerText=t;document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}sP(x,y){for(let i=0;i<8;i++){const p=document.createElement('div');p.className='pa';const s=4+Math.random()*6;p.style.width=s+'px';p.style.height=s+'px';p.style.left=x+'px';p.style.top=y+'px';const a=(Math.PI*2*i)/8+(Math.random()-0.5),v=60+Math.random()*80;p.style.transition='all .6s cubic-bezier(.25,.46,.45,.94)';document.body.appendChild(p);requestAnimationFrame(()=>{p.style.transform='translate('+Math.cos(a)*v+'px,'+Math.sin(a)*v+'px)scale(0)';p.style.opacity='0'});setTimeout(()=>p.remove(),600)}}sR(x,y){const r=document.createElement('div');r.style.cssText='position:absolute;border-radius:50%;border:2px solid rgba(54,201,246,.6);animation:ripple-expand .6s ease-out forwards;left:'+x+'px;top:'+y+'px;pointer-events:none';document.body.appendChild(r);setTimeout(()=>r.remove(),600)}sC(){const cols=['#36c9f6','#fff','#6ee7ff','#a5f3fc','#22d3ee','#fbbf24'];for(let i=0;i<25;i++){const c=document.createElement('div');c.className='cf';c.style.backgroundColor=cols[Math.floor(Math.random()*cols.length)];c.style.left=Math.random()*100+'vw';c.style.top='-10px';c.style.animation='c '+(1.5+Math.random()*2)+'s linear forwards';c.style.animationDelay=Math.random()*0.5+'s';c.style.borderRadius=Math.random()>0.5?'50%':'2px';c.style.width=(5+Math.random()*8)+'px';c.style.height=(5+Math.random()*8)+'px';document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}}sLU(lv){const t=["ICE NOVICE","ICE APPRENTICE","ICE HUNTER","ICE WARRIOR","ICE LORD","ICE KING","ICE EMPEROR","ICE GOD"][Math.min(lv-1,7)]||"LEGEND";setTimeout(()=>{this.t.showPopup({title:'⚡ LVL '+lv+'!',message:'You are '+t+'!',buttons:[{id:'ok',text:'GO!'}]})},300)}rU(){const en=this.e.ge(),pct=(en/this.e.m)*100,bar=document.getElementById('eb'),txt=document.getElementById('et'),warn=document.getElementById('ew'),ov=document.getElementById('edo');bar.style.width=pct+'%';txt.innerText=en+'/'+this.e.m;bar.classList.remove('el','em');if(pct<15){bar.classList.add('el');warn.classList.remove('hidden')}else if(pct<40){bar.classList.add('em');warn.classList.add('hidden')}else{warn.classList.add('hidden')}if(this.e.id()){ov.classList.remove('hidden');ov.classList.add('flex');this.uCD(this.e.gt())}else{ov.classList.add('hidden');ov.classList.remove('flex')}document.getElementById('sc').innerText=this.s.gs().toLocaleString();document.getElementById('dn').innerText=this.s.gd().toLocaleString();document.getElementById('ln').innerText=this.s.gl();document.getElementById('tt').innerText=this.s.gtt().toLocaleString();document.getElementById('bs').innerText=this.s.gbs();const st=this.s.gst(),sb=document.getElementById('sb');if(st>0){sb.classList.remove('hidden');sb.classList.add('flex');document.getElementById('sn').innerText=st}else{sb.classList.add('hidden');sb.classList.remove('flex')}this.gi.forEach(it=>{const st=this.s.gstock(it.id),el=document.getElementById('st-'+it.id),bar=document.getElementById('stb-'+it.id);if(el){el.innerText=st;bar.style.width=((st/666)*100)+'%'}});}rColl(){const grid=document.getElementById('cl-grid'),empty=document.getElementById('cl-empty');const inv=this.s.ginv();if(inv.length===0){empty.classList.remove('hidden');grid.innerHTML='<p id="cl-empty" class="col-span-2 text-center text-[#36c9f6]/40 text-sm py-12">No items yet. Tap or buy to collect!</p>';return}empty.classList.add('hidden');grid.innerHTML='';inv.forEach((it,i)=>{const div=document.createElement('div');div.className='inv-card ai';div.style.animationDelay=(i*0.05)+'s';div.innerHTML='<div class="inv-img"><img src="'+it.img+'" alt="'+it.name+'"></div><div class="p-3"><h4 class="text-xs font-bold text-white font-cyber">'+it.name+'</h4><p class="text-[10px] text-[#36c9f6]/50 mt-0.5">BLACK ICE</p></div>';grid.appendChild(div)})}gLB(){const names=["@ICEDARCY","@FROST","@BLIZZ","@SNOW","@GLACIER","@POLAR","@ARCTIC","@CHILL","@FREEZE","@CRYO","@TUNDRA","@AVALANCHE"];const base=[124500,98700,85400,72100,64500,53200,47800,41200,38900,35600,32100,29800];const seed=Math.floor(Date.now()/60000);const rnd=(s)=>{const x=Math.sin(s)*10000;return x-Math.floor(x)};const board=names.map((n,i)=>({n:n,sh:base[i]+Math.floor(rnd(seed+i*7)*8000)-4000}));const myScore=this.s.gs();board.push({n:"@YOU",sh:myScore,isMe:true});board.sort((a,b)=>b.sh-a.sh);return board}rL(){const c=document.getElementById('ll'),rp=document.getElementById('rp');const d=this.gLB();c.innerHTML='';rp.innerHTML='';const top3=d.slice(0,3);const rest=d.slice(3);if(top3.length>1){const second=top3.find(x=>!x.isMe)||top3[1];rp.innerHTML+='<div class="flex flex-col items-center"><div class="w-14 h-14 rounded-full border-2 border-gray-400 bg-gray-800 flex items-center justify-center text-xl rank-podium-2">🥈</div><p class="text-[10px] text-gray-400 font-bold mt-1">'+second.n+'</p><p class="text-xs text-[#36c9f6] font-black">'+second.sh.toLocaleString()+'</p></div>';}if(top3.length>0){const first=top3[0];rp.innerHTML+='<div class="flex flex-col items-center -mt-4"><div class="w-16 h-16 rounded-full border-2 border-yellow-400 bg-gray-800 flex items-center justify-center text-2xl animate-pulse rank-podium-1">👑</div><p class="text-[10px] text-yellow-400 font-bold mt-1">'+first.n+'</p><p class="text-xs text-[#36c9f6] font-black">'+first.sh.toLocaleString()+'</p></div>';}if(top3.length>2){const third=top3.find(x=>x!==top3[0]&&x!==(top3.find(y=>!y.isMe)||top3[1]))||top3[2];rp.innerHTML+='<div class="flex flex-col items-center"><div class="w-14 h-14 rounded-full border-2 border-orange-600 bg-gray-800 flex items-center justify-center text-xl rank-podium-3">🥉</div><p class="text-[10px] text-orange-600 font-bold mt-1">'+third.n+'</p><p class="text-xs text-[#36c9f6] font-black">'+third.sh.toLocaleString()+'</p></div>';}rest.forEach((e,i)=>{const r=i+4,div=document.createElement('div');div.className='p-3 rounded-xl border flex justify-between items-center text-xs rank-row ai '+(e.isMe?'me':'bg-gray-900/60 border-[#36c9f6]/20');div.style.animationDelay=(i*0.05)+'s';div.innerHTML='<div class="flex items-center gap-2"><span class="text-gray-500 w-4 inline-block text-center font-cyber">'+r+'</span><span class="font-bold '+(e.isMe?'text-[#36c9f6]':'text-white')+'">'+e.n+'</span>'+(e.isMe?'<span class="text-[10px] bg-[#36c9f6]/20 px-1.5 py-0.5 rounded text-[#36c9f6]">YOU</span>':'')+'</div><span class="text-[#36c9f6] font-black font-cyber">'+e.sh.toLocaleString()+'</span>';c.appendChild(div)})}sw(tn){document.querySelectorAll('.tc').forEach(el=>{el.classList.remove('a');setTimeout(()=>{if(!el.classList.contains('a'))el.style.display='none'},300)});const t=document.getElementById('t-'+tn);t.style.display='block';t.offsetHeight;t.classList.add('a');document.querySelectorAll('.nb').forEach(el=>{el.classList.remove('a');el.classList.replace('text-white','text-[#36c9f6]/40')});const n=document.getElementById('n-'+tn);n.classList.add('a');n.classList.replace('text-[#36c9f6]/40','text-white');this.h('light');if(tn==='rank')this.rL();if(tn==='coll')this.rColl()}h(ty){if(this.t.HapticFeedback){if(ty==='light')this.t.HapticFeedback.impactOccurred('light');else if(ty==='medium')this.t.HapticFeedback.impactOccurred('medium');else if(ty==='success')this.t.HapticFeedback.notificationOccurred('success');else if(ty==='error')this.t.HapticFeedback.notificationOccurred('error')}else if(navigator.vibrate){if(ty==='error')navigator.vibrate([50,50,50]);else navigator.vibrate(15)}}}
+const app=new App();
+</script></body></html>
