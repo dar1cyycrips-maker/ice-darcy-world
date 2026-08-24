@@ -228,47 +228,14 @@ body{font-family:Inter,sans-serif;background:#030406;color:#36c9f6;overflow-x:hi
 <button onclick="app.sw('rank')" id="n-rank" class="nb flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5"><span class="text-lg">🏆</span>RANKS</button>
 <button onclick="app.sw('coll')" id="n-coll" class="nb flex flex-col items-center text-[#36c9f6]/40 text-xs font-bold gap-0.5"><span class="text-lg">🎒</span>BAG</button>
 </nav>
-
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://dar1cyycrips-maker.github.io/ice-darcy-world/tonconnect-manifest.json'
-    });
-
-    window.sendTonPayment = async function(amountInTon) {
-        try {
-            if (!tonConnectUI.connected) {
-                await tonConnectUI.openModal();
-                return;
-            }
-
-            const myPersonalWallet = "UQAQ4D1q8hoC2mOiLBgx8ZSguB-MdTcKLAylFfeyWkxbC5Gp";
-            const amountInNano = Math.floor(amountInTon * 1000000000).toString();
-
-            const transaction = {
-                validUntil: Math.floor(Date.now() / 1000) + 600,
-                messages: [
-                    {
-                        address: myPersonalWallet,
-                        amount: amountInNano
-                    }
-                ]
-            };
-
-            const result = await tonConnectUI.sendTransaction(transaction);
-            console.log("Transaction Success:", result);
-            alert("ایولا! پرداخت موفقیت‌آمیز بود 🖤");
-
-        } catch (error) {
-            console.error("Transaction Error:", error);
-            alert("تراکنش انجام نشد.");
-        }
-    };
-
+    const C = {m: 'https://dar1cyycrips-maker.github.io/ice-darcy-world/tonconnect-manifest.json'};
     class A{constructor(){this.c=null;this.e=true}i(){if(!this.c)this.c=new(window.AudioContext||window.webkitAudioContext)();if(this.e){this.c.resume();this.e=false}}}
     class S{constructor(p,k){this.p=p+k}g(k){try{const v=localStorage.getItem(this.p+k);return v?JSON.parse(v):null}catch(e){return null}}s(k,v){try{localStorage.setItem(this.p+k,JSON.stringify(v))}catch(e){}}}
     class E{constructor(s,m,r){this.s=s;this.m=m;this.r=r*60*1000;this.c=10;this.od=null;this.os=null;this.op=null;this.f=false}}
     class App{constructor(){this.t=window.Telegram.WebApp;this.s=new S('_id_');this.a=new A();this.od=new E(this,60,1);this.es=new E(this,1440,10);this.eb=new E(this,10080,50);this.r=null;this.init()}}
     const app=new App();
 </script>
-</body></html>
+</body>
+</html>
