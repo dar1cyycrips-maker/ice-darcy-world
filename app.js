@@ -13,25 +13,12 @@ class A {
   pR(){if(!this.e||!this.c)return;[440,554,659].forEach((f,i)=>{const o=this.c.createOscillator(),g=this.c.createGain();o.connect(g);g.connect(this.c.destination);o.frequency.value=f;g.gain.setValueAtTime(0.1,this.c.currentTime+i*0.08);g.gain.exponentialRampToValueAtTime(0.001,this.c.currentTime+i*0.08+0.15);o.start(this.c.currentTime+i*0.08);o.stop(this.c.currentTime+i*0.08+0.15)})}
 }
 
-// ---------- local-only prefs (energy pacing; NOT shared/authoritative) ----------
+// ---------- local-only prefs (kept as a tiny key/value helper) ----------
 class S {
   constructor(){this.p='idw_'}
   k(k){return this.p+k}
   g(k){try{const v=localStorage.getItem(this.k(k));return v?JSON.parse(v):null}catch{return null}}
   s(k,v){localStorage.setItem(this.k(k),JSON.stringify(v))}
-  ge(){return this.g('e')??1000}
-  se(v){this.s('e',v)}
-  ged(){return this.g('ed')}
-  sed(v){this.s('ed',v)}
-}
-
-class E {
-  constructor(s,m,r){this.s=s;this.m=m;this.r=r*60*1000;this.c=10;this.od=null;this.or=null}
-  ge(){let e=this.s.ge();const d=this.s.ged();if(e<=0&&d){const n=Date.now();if(n>=d+this.r){e=this.m;this.s.se(e);this.s.sed(null);if(this.or)this.or('auto')}}return e}
-  co(){let e=this.ge();if(e<this.c)return false;e-=this.c;this.s.se(e);if(e<=0){this.s.sed(Date.now());if(this.od)this.od()}return true}
-  ir(){this.s.se(this.m);this.s.sed(null);if(this.or)this.or('stars');return this.m}
-  gt(){const d=this.s.ged();if(!d)return 0;return Math.max(0,d+this.r-Date.now())}
-  id(){return this.ge()<=0}
 }
 
 class App {
@@ -39,13 +26,10 @@ class App {
     this.t=window.Telegram.WebApp;
     this.s=new S();
     this.a=new A();
-    this.e=new E(this.s,1000,120);
     this.tc=null;
     this.db=null;
     this.profile=null;
     this.stock=[];
-    this.e.od=()=>this.oD();
-    this.e.or=(src)=>this.oR(src);
     this.i();
   }
 
@@ -72,7 +56,6 @@ class App {
     this.iTC();
     this.cD();
     this.sEL();
-    this.sCL();
     this.renderShop();
     this.rU();
     this.rColl();
@@ -96,12 +79,9 @@ class App {
   }
 
   async hT(e){
-    if(this.e.id()){this.h('error');this.a.pE();this.ft(e.clientX,e.clientY,'NO ENERGY!','#ef4444');const ta=document.getElementById('ta');ta.classList.add('as');setTimeout(()=>ta.classList.remove('as'),300);return}
-    if(!this.e.co()){this.oD();return}
     const x=e.clientX,y=e.clientY;
     this.ft(x,y,'+1','#fff');this.sP(x,y);this.sR(x,y);
     this.a.pT();this.h('light');
-    this.rU(); // optimistic energy update
 
     const res=await this.db.tap();
     if(!res)return;
@@ -112,23 +92,6 @@ class App {
     if(res.leveled_up){this.a.pL();this.h('success');this.sC();this.sLU(res.level)}
     this.rU();
     this.cG();
-  }
-
-  oD(){this.rU();this.a.pE();this.h('error')}
-  oR(src){this.rU();this.a.pR();this.h('success');if(src==='stars')this.ft(window.innerWidth/2,window.innerHeight/2,'REFILLED!','#fbbf24')}
-
-  sCL(){
-    setInterval(()=>{
-      if(this.e.id()){const r=this.e.gt();if(r<=0)this.e.ge();else this.uCD(r)}
-    },1000);
-  }
-
-  uCD(ms){
-    const ts=Math.ceil(ms/1000),hr=Math.floor(ts/3600),mn=Math.floor((ts%3600)/60),sc=ts%60;
-    document.getElementById('ch').innerText=String(hr).padStart(2,'0');
-    document.getElementById('cm').innerText=String(mn).padStart(2,'0');
-    document.getElementById('cs').innerText=String(sc).padStart(2,'0');
-    document.getElementById('cl').innerText=String(hr).padStart(2,'0')+':'+String(mn).padStart(2,'0')+':'+String(sc).padStart(2,'0');
   }
 
   // ---------- SHOP (renders live stock; purchase is a reservation only) ----------
@@ -171,11 +134,6 @@ class App {
   async bS(itemId,stars){
     this.h('medium');
     this.t.showPopup({title:'🔧 Coming soon',message:'Star payments will open once the verification backend is connected. No charge has been made.',buttons:[{id:'ok',text:'OK'}]});
-  }
-
-  rS(){
-    this.h('medium');
-    this.t.showPopup({title:'🔧 Coming soon',message:'Energy refills will open once the verification backend is connected.',buttons:[{id:'ok',text:'OK'}]});
   }
 
   // ---------- daily ----------
@@ -232,15 +190,6 @@ class App {
 
   // ---------- UI refresh ----------
   rU(){
-    const en=this.e.ge(),pct=(en/this.e.m)*100,bar=document.getElementById('eb'),txt=document.getElementById('et'),warn=document.getElementById('ew'),ov=document.getElementById('edo');
-    bar.style.width=pct+'%';txt.innerText=en+'/'+this.e.m;
-    bar.classList.remove('el','em');
-    if(pct<15){bar.classList.add('el');warn.classList.remove('hidden')}
-    else if(pct<40){bar.classList.add('em');warn.classList.add('hidden')}
-    else{warn.classList.add('hidden')}
-    if(this.e.id()){ov.classList.remove('hidden');ov.classList.add('flex');this.uCD(this.e.gt())}
-    else{ov.classList.add('hidden');ov.classList.remove('flex')}
-
     const p=this.profile||{};
     document.getElementById('sc').innerText=(p.shards||0).toLocaleString();
     document.getElementById('dn').innerText=(p.shards||0).toLocaleString();
@@ -311,3 +260,4 @@ class App {
 }
 
 const app = new App();
+      
