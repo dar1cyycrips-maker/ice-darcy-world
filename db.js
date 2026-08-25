@@ -17,7 +17,7 @@ class DB {
       p_telegram_id: this.tid,
       p_username: this.username
     });
-    if (error) console.error('ensureProfile error', error);
+    if (error) { console.error('ensureProfile error', error); throw new Error('ensure_profile failed: ' + error.message); }
   }
 
   async getProfile() {
@@ -30,11 +30,12 @@ class DB {
     return data;
   }
 
-  // Returns {shards, dust, level, leveled_up} or null if rate-limited/error
+  // Returns {shards, dust, level, leveled_up} or throws with a readable message
   async tap() {
     const { data, error } = await sb.rpc('register_tap', { p_telegram_id: this.tid });
-    if (error) { console.error('tap error', error); return null; }
-    return data && data[0] ? data[0] : null;
+    if (error) { console.error('tap error', error); throw new Error(error.message || 'register_tap failed'); }
+    if (!data || !data[0]) throw new Error('register_tap returned no row — profile may not exist for telegram_id ' + this.tid);
+    return data[0];
   }
 
   async claimDaily() {
@@ -96,5 +97,5 @@ class DB {
     if (error) return null;
     return data.status;
   }
-}
-
+  }
+                                                               
