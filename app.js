@@ -49,9 +49,14 @@ class App {
     this.db=new DB(tid, uname);
     document.getElementById('ud').innerText='@'+uname;
 
-    await this.db.ensureProfile();
-    this.profile=await this.db.getProfile();
-    this.stock=await this.db.getStock();
+    try {
+      await this.db.ensureProfile();
+      this.profile=await this.db.getProfile();
+      this.stock=await this.db.getStock();
+    } catch (err) {
+      this.t.showPopup({title:'⚠️ DB Error',message:String(err.message||err),buttons:[{id:'ok',text:'OK'}]});
+      console.error(err);
+    }
 
     this.iTC();
     this.cD();
@@ -83,8 +88,14 @@ class App {
     this.ft(x,y,'+1','#fff');this.sP(x,y);this.sR(x,y);
     this.a.pT();this.h('light');
 
-    const res=await this.db.tap();
-    if(!res)return;
+    let res;
+    try {
+      res = await this.db.tap();
+    } catch (err) {
+      this.t.showPopup({title:'⚠️ Tap Error',message:String(err.message||err),buttons:[{id:'ok',text:'OK'}]});
+      console.error(err);
+      return;
+    }
     this.profile.shards=Number(res.shards);
     this.profile.dust=Number(res.dust);
     const oldLevel=this.profile.level;
@@ -260,4 +271,4 @@ class App {
 }
 
 const app = new App();
-      
+    
