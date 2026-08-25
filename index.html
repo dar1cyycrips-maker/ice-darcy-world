@@ -8,9 +8,6 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- TEMPORARY DEBUG CONSOLE — remove this line once bugs are fixed -->
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap');
 *{box-sizing:border-box;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -121,7 +118,6 @@ body{font-family:Inter,sans-serif;background:#030406;color:#36c9f6;overflow-x:hi
 <div class="relative flex items-center justify-center my-6" id="ta"><div class="absolute w-56 h-56 rounded-full bg-[#36c9f6]/10 blur-2xl animate-pulse"></div><button id="tb" class="tb relative w-40 h-40 rounded-full border-[3px] border-[#36c9f6] shadow-[0_0_50px_rgba(54,201,246,0.3)] overflow-hidden bg-[#030406]"><img src="https://i.postimg.cc/d3rbWj89/1787215341087.jpg" class="w-full h-full object-cover opacity-90"></button></div>
 <div class="text-center ai"><span id="sc" class="text-5xl font-black text-white font-cyber">0</span><p class="text-xs text-[#36c9f6]/70 mt-1 uppercase">Total Shards</p></div>
 <div class="grid grid-cols-2 gap-3 w-full mt-6"><div class="gp p-3 text-center"><p class="text-[10px] text-[#36c9f6]/60 uppercase">Taps Today</p><p id="tt" class="text-lg font-bold text-white font-cyber">0</p></div><div class="gp p-3 text-center"><p class="text-[10px] text-[#36c9f6]/60 uppercase">Best Streak</p><p id="bst" class="text-lg font-bold text-white font-cyber">0</p></div></div>
-<div class="w-full gp p-4 mt-4 relative overflow-hidden"><div class="flex justify-between text-xs font-bold mb-2"><span>⚡ ENERGY</span><span id="et" class="font-cyber">1000/1000</span></div><div class="w-full bg-black/50 h-3 rounded-full overflow-hidden border border-[#36c9f6]/20"><div id="eb" class="bg-[#36c9f6] h-full w-full transition-all duration-200 shadow-[0_0_10px_#36c9f6] rounded-full"></div></div><p id="ew" class="text-[10px] text-red-400 mt-1.5 hidden text-center font-bold animate-pulse">⚠️ DEPLETED</p><div id="edo" class="eo absolute inset-0 rounded-2xl flex-col items-center justify-center hidden"><p class="text-xs font-bold text-red-400 mb-2 animate-pulse">⚡ DEPLETED</p><div class="flex items-center gap-2 mb-2"><div class="cd" id="ch">00</div><span class="text-white/50">:</span><div class="cd" id="cm">00</div><span class="text-white/50">:</span><div class="cd" id="cs">00</div></div><p class="text-[10px] text-[#36c9f6]/60 mb-3">Auto-refill <span id="cl">02:00:00</span></p><button onclick="app.rS()" class="bs text-xs px-4 py-2">⭐ REFILL (6)</button></div></div>
 </section>
 
 <!-- RANKS -->
@@ -145,3 +141,4 @@ body{font-family:Inter,sans-serif;background:#030406;color:#36c9f6;overflow-x:hi
 <script src="app.js"></script>
 </body>
 </html>
+
